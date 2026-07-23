@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Método y límites — VERIFACTU Lab</title>
+<meta name="description" content="Cómo trabaja VERIFACTU Lab: corpus versionado trazado a documentación oficial AEAT, pruebas black-box con datos sintéticos, evidencias reproducibles y límites expresados con claridad.">
+<style>
+  :root { --ink:#1a1d21; --mut:#5a6270; --acc:#0b57d0; --bg:#ffffff; --soft:#f4f6f8; --line:#e3e7ec; }
+  @media (prefers-color-scheme: dark) {
+    :root { --ink:#e8eaed; --mut:#9aa3b2; --acc:#7cacf8; --bg:#101418; --soft:#1a2027; --line:#2a323c; }
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; color:var(--ink); background:var(--bg); }
+  main { max-width:46rem; margin:0 auto; padding:3rem 1.25rem 4rem; }
+  h1 { font-size:1.9rem; line-height:1.25; margin-bottom:.75rem; }
+  h2 { font-size:1.15rem; margin:2.2rem 0 .6rem; }
+  p, li { color:var(--mut); }
+  strong { color:var(--ink); }
+  ul { padding-left:1.2rem; margin:.5rem 0; }
+  li { margin:.35rem 0; }
+  .tag { display:inline-block; font-size:.8rem; letter-spacing:.06em; text-transform:uppercase; color:var(--acc); margin-bottom:1rem; }
+  .disclaimer { border-left:3px solid var(--acc); padding:.8rem 1.1rem; background:var(--soft); border-radius:0 8px 8px 0; margin-top:2rem; font-size:.92rem; }
+  a { color:var(--acc); }
+  footer { max-width:46rem; margin:0 auto; padding:1.5rem 1.25rem 2.5rem; font-size:.85rem; color:var(--mut); border-top:1px solid var(--line); }
+  nav a { text-decoration:none; }
+</style>
+</head>
+<body>
+<main>
+  <nav><a href="/" class="tag">← VERIFACTU Lab</a></nav>
+  <h1>Método y límites</h1>
+  <p>VERIFACTU Lab realiza pruebas técnicas black-box sobre implementaciones
+  VERI*FACTU. La credibilidad del trabajo no depende de una afirmación de
+  autoridad, sino de un método reproducible, un corpus versionado y fuentes
+  identificables.</p>
+
+  <h2>Corpus de pruebas</h2>
+  <ul>
+    <li><strong>12 vectores verificados</strong> y trazados a tres documentos
+    oficiales de la AEAT: especificaciones de la huella v0.1.2 (incluidos sus
+    tres vectores oficiales, reproducidos), especificaciones del código QR
+    v0.5.0 y validaciones y errores v1.2.2.</li>
+    <li><strong>Hipótesis adicionales</strong> claramente etiquetadas como
+    tales. Una hipótesis no se presenta como regla normativa verificada: su
+    finalidad es explorar comportamientos que requieren contraste técnico,
+    sin atribuirles el respaldo de una fuente oficial.</li>
+  </ul>
+  <p>El corpus está versionado para que el alcance de cada ejecución pueda
+  identificarse y repetirse.</p>
+
+  <h2>Cómo se realiza una revisión</h2>
+  <p>Las pruebas son black-box: se evalúa el comportamiento observable de la
+  implementación dentro del alcance acordado, sin convertir la revisión en un
+  análisis interno de su código. Antes de ejecutar se firman reglas de
+  engagement que fijan el alcance y las condiciones de la prueba. Todo el
+  material empleado es sintético. No se utilizan datos reales y nunca se
+  realizan pruebas contra el entorno de producción de la AEAT.</p>
+
+  <h2>Evidencias reproducibles</h2>
+  <p>Los resultados se entregan en formatos JSON y HTML reproducibles. Las
+  evidencias incluyen un manifiesto SHA-256 que permite comprobar su
+  integridad y detectar alteraciones posteriores. Este mecanismo no
+  constituye una cadena de custodia ni convierte el material en prueba
+  pericial.</p>
+
+  <h2>Referencias normativas</h2>
+  <p>Las fechas y afirmaciones normativas del método se contrastan con
+  fuentes primarias publicadas en el BOE:</p>
+  <ul>
+    <li>Real Decreto-ley 15/2025.</li>
+    <li>Disposición final cuarta del Real Decreto 1007/2023 y Orden
+    HAC/1177/2024.</li>
+    <li>Artículo 13 del Real Decreto 1007/2023, que articula la certificación
+    del sistema mediante declaración responsable.</li>
+  </ul>
+  <p>Los plazos aplicables son el 1 de enero de 2027 para contribuyentes del
+  Impuesto sobre Sociedades y el 1 de julio de 2027 para el resto de
+  obligados. Las fuentes se identifican para que las afirmaciones puedan
+  comprobarse de forma independiente.</p>
+
+  <h2>Límites actuales</h2>
+  <p>La validación mediante XSD está actualmente fuera del alcance porque
+  VERIFACTU Lab no dispone de esquemas oficiales redistribuibles. El servicio
+  tampoco comprende: pruebas con datos reales, ejecuciones contra producción
+  de la AEAT, revisión jurídica, ni la emisión de certificaciones u
+  homologaciones.</p>
+  <div class="disclaimer">El informe no es una certificación ni una
+  homologación, no ofrece garantía legal y no sustituye ninguna de ellas.</div>
+
+  <h2>Quién está detrás</h2>
+  <p>VERIFACTU Lab está impulsado por <strong>Unai Trejo Ferré</strong>,
+  técnico de sistemas con el grado medio de Sistemas Microinformáticos y
+  Redes terminado y próximo a comenzar el grado superior de Administración de
+  Sistemas Informáticos en Red. Lleva años programando de forma autodidacta,
+  tiene experiencia con Linux y Red Hat y un interés especial por la
+  seguridad ofensiva.</p>
+  <p>Unai es joven y no pretende ocultarlo detrás de un currículum
+  corporativo que no tiene. La tesis del proyecto es sencilla: la confianza
+  debe apoyarse en pruebas reproducibles, fuentes primarias y límites
+  expresados con claridad.</p>
+  <p>GitHub: <a href="https://github.com/0xg00">github.com/0xg00</a> ·
+  Contacto: <a href="mailto:hola@verifactulab.es">hola@verifactulab.es</a></p>
+</main>
+<footer>
+  <p>VERIFACTU Lab · <a href="/">inicio</a> ·
+  <a href="mailto:hola@verifactulab.es">hola@verifactulab.es</a></p>
+  <p>VERI*FACTU es la denominación del sistema de emisión de facturas
+  verificables de la Agencia Tributaria. Este sitio es independiente y no
+  está afiliado a la AEAT.</p>
+</footer>
+</body>
+</html>
