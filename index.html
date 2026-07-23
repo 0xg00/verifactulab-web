@@ -11,92 +11,161 @@
     :root { --ink:#e8eaed; --mut:#9aa3b2; --acc:#7cacf8; --bg:#101418; --soft:#1a2027; --line:#2a323c; }
   }
   * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
   body { font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; color:var(--ink); background:var(--bg); }
-  main { max-width:46rem; margin:0 auto; padding:3rem 1.25rem 4rem; }
-  h1 { font-size:1.9rem; line-height:1.25; margin-bottom:.75rem; }
-  h2 { font-size:1.15rem; margin:2.2rem 0 .6rem; }
+  nav { position:sticky; top:0; z-index:10; background:color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); }
+  nav div { max-width:52rem; margin:0 auto; padding:.7rem 1.25rem; display:flex; gap:1.2rem; flex-wrap:wrap; align-items:center; font-size:.9rem; }
+  nav strong { color:var(--acc); margin-right:auto; }
+  nav a { color:var(--mut); text-decoration:none; }
+  nav a:hover { color:var(--ink); }
+  main { max-width:52rem; margin:0 auto; padding:2.5rem 1.25rem 4rem; }
+  section { padding:2rem 0; border-top:1px solid var(--line); }
+  section:first-of-type { border-top:none; }
+  h1 { font-size:1.95rem; line-height:1.25; margin-bottom:.75rem; }
+  h2 { font-size:1.25rem; margin-bottom:.9rem; }
+  h3 { font-size:1rem; margin:1rem 0 .3rem; }
   p, li { color:var(--mut); }
   strong { color:var(--ink); }
   ul { padding-left:1.2rem; margin:.5rem 0; }
   li { margin:.35rem 0; }
   .tag { display:inline-block; font-size:.8rem; letter-spacing:.06em; text-transform:uppercase; color:var(--acc); margin-bottom:1rem; }
+  .lead { font-size:1.08rem; }
   .card { background:var(--soft); border:1px solid var(--line); border-radius:10px; padding:1.1rem 1.3rem; margin:1rem 0; }
   .price { font-size:1.5rem; color:var(--ink); font-weight:600; }
-  .disclaimer { border-left:3px solid var(--acc); padding:.8rem 1.1rem; background:var(--soft); border-radius:0 8px 8px 0; margin-top:2.5rem; font-size:.92rem; }
+  .disclaimer { border-left:3px solid var(--acc); padding:.8rem 1.1rem; background:var(--soft); border-radius:0 8px 8px 0; margin-top:1.5rem; font-size:.92rem; }
   a { color:var(--acc); }
-  footer { max-width:46rem; margin:0 auto; padding:1.5rem 1.25rem 2.5rem; font-size:.85rem; color:var(--mut); border-top:1px solid var(--line); }
   .cta { display:inline-block; margin-top:1rem; padding:.65rem 1.2rem; background:var(--acc); color:#fff; border-radius:8px; text-decoration:none; font-weight:600; }
+  .me { display:flex; gap:1.3rem; align-items:flex-start; flex-wrap:wrap; }
+  .me img { width:120px; height:120px; border-radius:12px; object-fit:cover; flex:none; }
+  .me .who { flex:1; min-width:15rem; }
+  .steps { counter-reset:s; list-style:none; padding:0; }
+  .steps li { counter-increment:s; position:relative; padding-left:2.2rem; margin:.7rem 0; }
+  .steps li::before { content:counter(s); position:absolute; left:0; top:0; width:1.5rem; height:1.5rem; background:var(--acc); color:#fff; border-radius:50%; display:grid; place-items:center; font-size:.85rem; font-weight:600; }
+  footer { max-width:52rem; margin:0 auto; padding:1.5rem 1.25rem 2.5rem; font-size:.85rem; color:var(--mut); border-top:1px solid var(--line); }
 </style>
 </head>
 <body>
+<nav><div>
+  <strong>VERIFACTU Lab</strong>
+  <a href="#que">Qué probamos</a>
+  <a href="#metodo">Método</a>
+  <a href="#quien">Quién</a>
+  <a href="#piloto">Piloto</a>
+  <a href="mailto:hola@verifactulab.es">Contacto</a>
+</div></nav>
+
 <main>
-  <span class="tag">VERIFACTU Lab</span>
-  <h1>Auditoría técnica independiente de tu implementación VERI*FACTU</h1>
-  <p>Pruebas black-box de sistemas informáticos de facturación (SIF) y APIs
-  VERI*FACTU con un corpus adversarial versionado, trazado a la documentación
-  técnica oficial de la AEAT. Evidencias reproducibles, informe técnico y una
-  sesión de revisión. Ingeniería, no papeleo.</p>
+  <section>
+    <span class="tag">Auditoría técnica independiente</span>
+    <h1>¿Tu implementación VERI*FACTU sobrevive a un corpus adversarial?</h1>
+    <p class="lead">Pruebo sistemas de facturación (SIF) y APIs VERI*FACTU en
+    black-box contra un corpus trazado a la documentación técnica oficial de la
+    AEAT. Evidencias reproducibles, informe técnico y una sesión de revisión.
+    Ingeniería, no papeleo.</p>
+    <a class="cta" href="mailto:hola@verifactulab.es">Escríbeme: hola@verifactulab.es</a>
+  </section>
 
-  <h2>Qué se prueba</h2>
-  <ul>
-    <li><strong>Cadena de huellas (hash):</strong> regla oficial v0.1.2 — el
-    corpus reproduce los 3 vectores oficiales de la AEAT y añade mutaciones
-    adversariales de encadenado y decimales.</li>
-    <li><strong>Código QR:</strong> URL de cotejo, parámetros y codificación
-    según la especificación oficial v0.5.0.</li>
-    <li><strong>Datos y fechas:</strong> validaciones oficiales v1.2.2
-    (importes, fechas de expedición).</li>
-    <li>12 vectores verificados contra los PDF oficiales de la AEAT, más
-    hipótesis de investigación siempre etiquetadas como tales — nunca se
-    presentan como hallazgo normativo.</li>
-  </ul>
+  <section id="que">
+    <h2>Qué se prueba</h2>
+    <ul>
+      <li><strong>Cadena de huellas (hash):</strong> regla oficial v0.1.2 — el
+      corpus reproduce los <strong>3 vectores oficiales de la AEAT</strong> y
+      añade mutaciones adversariales de encadenado y decimales.</li>
+      <li><strong>Código QR:</strong> URL de cotejo, parámetros y codificación
+      según la especificación oficial v0.5.0.</li>
+      <li><strong>Datos y fechas:</strong> validaciones oficiales v1.2.2
+      (importes, fechas de expedición).</li>
+      <li><strong>12 vectores verificados</strong> contra los PDF oficiales de
+      la AEAT, más hipótesis de investigación siempre etiquetadas como tales —
+      nunca se presentan como hallazgo normativo.</li>
+    </ul>
+    <h3>Qué recibes</h3>
+    <ul>
+      <li>Ejecución black-box contra tu <strong>entorno de pruebas</strong>
+      (nunca producción), con datos 100 % sintéticos.</li>
+      <li>Expediente de evidencias con integridad verificable mediante
+      manifiesto SHA-256 (detecta alteraciones; no es cadena de custodia ni
+      prueba pericial).</li>
+      <li>Informe técnico JSON + HTML reproducible y una sesión de revisión de
+      60 minutos.</li>
+    </ul>
+  </section>
 
-  <h2>Qué recibes</h2>
-  <ul>
-    <li>Ejecución black-box contra tu <strong>entorno de pruebas</strong>
-    (nunca producción), con datos 100 % sintéticos.</li>
-    <li>Expediente de evidencias con integridad verificable mediante
-    manifiesto SHA-256 (detecta alteraciones; no constituye cadena de
-    custodia ni prueba pericial).</li>
-    <li>Informe técnico JSON + HTML reproducible y una sesión de revisión de
-    60 minutos.</li>
-  </ul>
+  <section id="metodo">
+    <h2>Método</h2>
+    <p>El método se apoya en fuentes identificables y resultados reproducibles.</p>
+    <ol class="steps">
+      <li><strong>Corpus trazado a la fuente.</strong> Cada vector verificado
+      identifica el PDF oficial de la AEAT, su versión y la regla esperada. El
+      corpus reproduce los 3 vectores oficiales de huella.</li>
+      <li><strong>Reglas de engagement firmadas.</strong> Antes de ejecutar
+      nada: alcance cerrado, rutas y límites permitidos, ventana, datos
+      sintéticos y autorización expresa sobre tu entorno de pruebas.</li>
+      <li><strong>Black-box, sin tocar producción.</strong> Se prueba lo que tu
+      sistema genera; no se accede a datos reales ni a la sede de la AEAT.</li>
+      <li><strong>Integridad verificable.</strong> Cada ejecución produce un
+      expediente con manifiesto SHA-256 que permite detectar alteraciones
+      posteriores. No constituye cadena de custodia ni prueba pericial.</li>
+      <li><strong>Informe reproducible.</strong> Los resultados se entregan en
+      JSON y HTML.</li>
+    </ol>
+  </section>
 
-  <div class="card">
-    <p class="price">Piloto: 490 €</p>
-    <p>Hasta 25 vectores · una implementación/versión · hasta 14 días desde
-    que entregas un entorno utilizable · alcance congelado por escrito.</p>
-    <a class="cta" href="mailto:hola@verifactulab.es">hola@verifactulab.es</a>
-  </div>
+  <section id="quien">
+    <h2>Quién hay detrás</h2>
+    <div class="me">
+      <img src="unai.jpg" alt="Unai Trejo Ferré">
+      <div class="who">
+        <p><strong>Unai Trejo Ferré</strong> — fundador de VERIFACTU Lab.
+        Técnico en Sistemas Microinformáticos y Redes (CFGM), próximo a comenzar
+        ASIX, con experiencia como programador freelance. Practica pentesting en
+        entornos de entrenamiento como Hack The Box y aplica esa mentalidad
+        adversarial — intentar romper lo que se da por bueno — a las pruebas del
+        laboratorio.</p>
+        <p>VERIFACTU Lab es un laboratorio técnico independiente y de nueva
+        creación. Su trabajo se apoya en un corpus versionado, fuentes oficiales
+        y evidencias reproducibles. No presta asesoramiento jurídico ni emite
+        certificaciones u homologaciones.</p>
+        <p><a href="https://www.linkedin.com/in/utferre/">LinkedIn</a> ·
+        <a href="https://github.com/0xg00">GitHub</a> ·
+        <a href="mailto:hola@verifactulab.es">hola@verifactulab.es</a></p>
+      </div>
+    </div>
+  </section>
 
-  <p><a href="/metodo.html">Método, límites y quién está detrás →</a></p>
-
-  <h2>Por qué una auditoría independiente</h2>
-  <p>La «certificación» que prevé la norma es la <strong>declaración
-  responsable del propio fabricante</strong> (art. 13 del RD 1007/2023): una
-  autocertificación. No consta homologación emitida por la AEAT. Una
-  evidencia técnica independiente y reproducible añade exactamente lo que una
-  autocertificación no puede. La obligación del fabricante — ofrecer
-  productos plenamente adaptados — está en vigor desde el 29-07-2025
-  (RD 1007/2023, DF 4.ª y Orden HAC/1177/2024); la de tus clientes llega el
-  01-01-2027 (contribuyentes del Impuesto sobre Sociedades) o el 01-07-2027
-  (resto de obligados), según el RDL 15/2025.</p>
-
-  <div class="disclaimer">
-    <strong>Lo que esto no es:</strong> este servicio no es una certificación
-    ni una homologación, no las sustituye, no constituye revisión jurídica ni
-    garantiza el cumplimiento normativo. El informe lo hace constar
-    expresamente. La herramienta no emite ni transmite facturas en nombre del
-    cliente, no se accede a producción de la AEAT y no se tratan datos reales.
-  </div>
+  <section id="piloto">
+    <h2>Piloto</h2>
+    <div class="card">
+      <p class="price">490 €</p>
+      <p>Hasta 25 vectores · una implementación/versión · hasta 14 días desde
+      que entregas un entorno utilizable · alcance congelado por escrito.</p>
+      <a class="cta" href="mailto:hola@verifactulab.es">Reserva una llamada de 20 min</a>
+    </div>
+    <h3>Por qué una auditoría independiente</h3>
+    <p>La «certificación» que prevé la norma es la <strong>declaración
+    responsable del propio fabricante</strong> (art. 13 del RD 1007/2023): una
+    autocertificación. No consta homologación emitida por la AEAT. Una evidencia
+    técnica independiente y reproducible añade exactamente lo que una
+    autocertificación no puede. La obligación del fabricante — ofrecer productos
+    plenamente adaptados — está en vigor desde el 29-07-2025 (RD 1007/2023,
+    DF 4.ª y Orden HAC/1177/2024); la de tus clientes llega el 01-01-2027
+    (contribuyentes del Impuesto sobre Sociedades) o el 01-07-2027 (resto),
+    según el RDL 15/2025.</p>
+    <div class="disclaimer">
+      <strong>Lo que esto no es:</strong> este servicio no es una certificación
+      ni una homologación, no las sustituye, no constituye revisión jurídica ni
+      garantiza el cumplimiento normativo. El informe lo hace constar
+      expresamente. La herramienta no emite ni transmite facturas en nombre del
+      cliente, no accede a producción de la AEAT y no trata datos reales.
+    </div>
+  </section>
 </main>
 <footer>
   <p>VERIFACTU Lab · auditoría técnica de sistemas de facturación ·
-  <a href="/metodo.html">método y límites</a> ·
   <a href="mailto:hola@verifactulab.es">hola@verifactulab.es</a></p>
   <p>VERI*FACTU es la denominación del sistema de emisión de facturas
-  verificables de la Agencia Tributaria. Este sitio es independiente y no
-  está afiliado a la AEAT.</p>
+  verificables de la Agencia Tributaria. Este sitio es independiente y no está
+  afiliado a la AEAT.</p>
 </footer>
 </body>
 </html>
