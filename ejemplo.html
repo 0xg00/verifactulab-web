@@ -1,0 +1,2625 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Informe de ejemplo (demostración) · VERIFACTU Lab</title>
+  <style>
+    :root {
+      --paper: #f4f0e6;
+      --paper-raised: #fffdf7;
+      --ink: #17201d;
+      --ink-muted: #56605b;
+      --line: #b7b6a9;
+      --line-strong: #28342f;
+      --accent: #b83a2d;
+      --accent-soft: #f1d9d2;
+      --moss: #314d40;
+      --moss-soft: #dce6df;
+      --amber: #8c5a10;
+      --amber-soft: #f2e4c8;
+      --mono: "Cascadia Mono", "IBM Plex Mono", Consolas, monospace;
+      --serif: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--serif);
+      line-height: 1.45;
+    }
+
+    body {
+      margin: 0;
+      background:
+        linear-gradient(90deg, rgb(23 32 29 / 4%) 1px, transparent 1px) 0 0 / 32px 32px,
+        var(--paper);
+    }
+
+    main {
+      width: min(1180px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 48px 0 72px;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin-top: 0;
+    }
+
+    h1 {
+      max-width: 850px;
+      margin-bottom: 14px;
+      font-size: clamp(2.35rem, 6vw, 5.6rem);
+      font-weight: 500;
+      letter-spacing: -0.055em;
+      line-height: 0.91;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      font-size: clamp(1.45rem, 3vw, 2.3rem);
+      font-weight: 500;
+      letter-spacing: -0.025em;
+    }
+
+    h3 {
+      margin-bottom: 12px;
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+
+    code,
+    pre,
+    .mono {
+      font-family: var(--mono);
+    }
+
+    code {
+      font-size: 0.88em;
+    }
+
+    pre {
+      min-height: 7rem;
+      margin: 0;
+      padding: 14px;
+      overflow-wrap: anywhere;
+      white-space: pre-wrap;
+      background: #ede9df;
+      border: 1px solid var(--line);
+      font-size: 0.77rem;
+      line-height: 1.5;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      padding: 9px 10px;
+      vertical-align: top;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+    }
+
+    th {
+      color: var(--ink-muted);
+      font-size: 0.69rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    td {
+      font-size: 0.9rem;
+    }
+
+    .masthead {
+      position: relative;
+      padding: 28px 0 34px;
+      border-top: 8px solid var(--ink);
+      border-bottom: 1px solid var(--line-strong);
+    }
+
+    .masthead::after {
+      position: absolute;
+      right: 0;
+      bottom: 34px;
+      width: clamp(44px, 8vw, 96px);
+      height: clamp(44px, 8vw, 96px);
+      background:
+        linear-gradient(135deg, transparent 44%, var(--accent) 45%, var(--accent) 55%, transparent 56%);
+      content: "";
+    }
+
+    .eyebrow,
+    .section-index,
+    .label {
+      color: var(--ink-muted);
+      font-family: var(--mono);
+      font-size: 0.69rem;
+      font-weight: 700;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+    }
+
+    .lede {
+      max-width: 720px;
+      margin: 0;
+      color: var(--ink-muted);
+      font-size: 1.05rem;
+    }
+
+    .document-id {
+      display: inline-block;
+      margin-top: 25px;
+      padding: 7px 10px;
+      background: var(--ink);
+      color: var(--paper-raised);
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      overflow-wrap: anywhere;
+    }
+
+    .section {
+      margin-top: 42px;
+      padding: 26px;
+      background: rgb(255 253 247 / 88%);
+      border: 1px solid var(--line);
+      box-shadow: 7px 7px 0 rgb(23 32 29 / 9%);
+    }
+
+    .section-heading {
+      display: flex;
+      gap: 20px;
+      align-items: baseline;
+      justify-content: space-between;
+      border-bottom: 2px solid var(--line-strong);
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+      gap: 1px;
+      margin-top: 22px;
+      background: var(--line);
+      border: 1px solid var(--line);
+    }
+
+    .summary-card {
+      min-height: 120px;
+      padding: 18px;
+      background: var(--paper-raised);
+    }
+
+    .summary-count {
+      display: block;
+      margin-top: 13px;
+      font-family: var(--mono);
+      font-size: 2.7rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .summary-card[data-summary-verdict="pass"] {
+      border-top: 5px solid var(--moss);
+    }
+
+    .summary-card[data-summary-verdict="fail"],
+    .summary-card[data-summary-verdict="error"] {
+      border-top: 5px solid var(--accent);
+    }
+
+    .summary-card[data-summary-verdict="warning"],
+    .summary-card[data-summary-verdict="research_required"] {
+      border-top: 5px solid var(--amber);
+    }
+
+    .identity-grid,
+    .coverage-grid,
+    .result-grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .identity-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      margin-top: 22px;
+    }
+
+    .identity-block {
+      padding-left: 14px;
+      border-left: 4px solid var(--line-strong);
+    }
+
+    .identity-value {
+      margin: 4px 0 0;
+      font-size: 1.05rem;
+      overflow-wrap: anywhere;
+    }
+
+    .scope {
+      grid-column: 1 / -1;
+      padding: 16px;
+      background: var(--moss-soft);
+      border-left-color: var(--moss);
+    }
+
+    .coverage-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      margin-top: 20px;
+    }
+
+    .coverage-total {
+      font-family: var(--mono);
+      font-size: 2.2rem;
+      font-weight: 700;
+    }
+
+    .source-list,
+    .limitation-list,
+    .reason-list,
+    .evidence-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .source-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .source-item {
+      padding: 13px 15px;
+      background: #ede9df;
+      border-left: 3px solid var(--amber);
+    }
+
+    .source-title {
+      display: block;
+      margin-bottom: 3px;
+      font-weight: 700;
+    }
+
+    .source-detail {
+      display: block;
+      color: var(--ink-muted);
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      overflow-wrap: anywhere;
+    }
+
+    .case-file {
+      margin-top: 28px;
+      border: 1px solid var(--line-strong);
+      background: var(--paper-raised);
+    }
+
+    .case-file:first-of-type {
+      margin-top: 20px;
+    }
+
+    .case-header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
+      padding: 18px 20px;
+      background: var(--ink);
+      color: var(--paper-raised);
+    }
+
+    .case-title {
+      margin: 4px 0 0;
+      font-size: 1.23rem;
+      font-weight: 500;
+    }
+
+    .case-meta {
+      margin: 5px 0 0;
+      color: #d7ddd9;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+    }
+
+    .verdict {
+      align-self: start;
+      padding: 6px 9px;
+      background: var(--paper-raised);
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .case-body {
+      padding: 20px;
+    }
+
+    .result-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .result-panel {
+      min-width: 0;
+    }
+
+    .result-panel--verdict {
+      padding: 14px;
+      background: var(--accent-soft);
+      border: 1px solid #d7a89e;
+    }
+
+    .result-panel--verdict .verdict-word {
+      display: block;
+      margin-top: 18px;
+      color: var(--accent);
+      font-family: var(--mono);
+      font-size: 1.45rem;
+      font-weight: 700;
+      overflow-wrap: anywhere;
+    }
+
+    .reason-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 14px;
+    }
+
+    .reason-list li {
+      padding: 4px 7px;
+      background: var(--paper-raised);
+      border: 1px solid #d7a89e;
+      font-family: var(--mono);
+      font-size: 0.66rem;
+      overflow-wrap: anywhere;
+    }
+
+    .evidence-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .evidence-item {
+      padding: 10px;
+      background: #ede9df;
+      border-left: 3px solid var(--moss);
+      font-family: var(--mono);
+      font-size: 0.69rem;
+      overflow-wrap: anywhere;
+    }
+
+    .evidence-hash {
+      display: block;
+      margin-top: 3px;
+      color: var(--ink-muted);
+    }
+
+    .case-sources {
+      margin-top: 20px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+    }
+
+    .technical-errors {
+      border-color: #d7a89e;
+      background: #fff7f4;
+    }
+
+    .error-item {
+      display: grid;
+      grid-template-columns: minmax(180px, 0.3fr) 1fr;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid #d7a89e;
+    }
+
+    .error-item:last-child {
+      border-bottom: 0;
+    }
+
+    .limitation-list {
+      display: grid;
+      gap: 10px;
+      counter-reset: limitations;
+    }
+
+    .limitation-list li {
+      position: relative;
+      padding: 11px 12px 11px 50px;
+      background: var(--amber-soft);
+      counter-increment: limitations;
+    }
+
+    .limitation-list li::before {
+      position: absolute;
+      left: 13px;
+      color: var(--amber);
+      font-family: var(--mono);
+      font-weight: 700;
+      content: counter(limitations, decimal-leading-zero);
+    }
+
+    .disclaimer {
+      margin-top: 24px;
+      padding: 20px;
+      background: var(--ink);
+      color: var(--paper-raised);
+      border-left: 7px solid var(--accent);
+      font-size: 1.02rem;
+    }
+
+    .empty {
+      padding: 18px;
+      color: var(--ink-muted);
+      background: #ede9df;
+      border: 1px dashed var(--line);
+    }
+
+    .footer {
+      display: flex;
+      gap: 20px;
+      justify-content: space-between;
+      margin-top: 42px;
+      padding-top: 16px;
+      color: var(--ink-muted);
+      border-top: 1px solid var(--line-strong);
+      font-family: var(--mono);
+      font-size: 0.65rem;
+    }
+
+    @media (max-width: 760px) {
+      main {
+        width: min(100% - 22px, 1180px);
+        padding-top: 18px;
+      }
+
+      .section {
+        padding: 18px;
+      }
+
+      .identity-grid,
+      .coverage-grid,
+      .result-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .case-header,
+      .error-item {
+        grid-template-columns: 1fr;
+      }
+
+      .masthead::after {
+        display: none;
+      }
+    }
+
+    @media print {
+      @page {
+        margin: 15mm;
+        size: A4;
+      }
+
+      body,
+      html {
+        background: #fff;
+      }
+
+      main {
+        width: 100%;
+        padding: 0;
+      }
+
+      .section,
+      .case-file {
+        box-shadow: none;
+        break-inside: avoid;
+      }
+
+      .case-file {
+        break-before: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+<div style="background:#b83a2d;color:#fff;padding:14px 20px;font-family:system-ui,-apple-system,'Segoe UI',sans-serif;font-size:15px;line-height:1.55;text-align:center;">
+  <strong>Informe de EJEMPLO.</strong> Generado por VERIFACTU&nbsp;Lab contra un objetivo sintético de demostración, con datos 100&nbsp;% ficticios. No corresponde a ningún cliente ni a ninguna implementación real. &nbsp;·&nbsp; <a href="https://verifactulab.es" style="color:#fff;text-decoration:underline;font-weight:600;">← Volver a verifactulab.es</a>
+</div>
+  <main>
+    <header class="masthead">
+      <p class="eyebrow">VERIFACTU-QA-LAB · Informe reproducible · Esquema 0.1</p>
+      <h1>Expediente técnico de ejecución</h1>
+      <p class="lede">
+        Resultado derivado exclusivamente de evidencia sellada. Esperado, observado
+        y veredicto se presentan por separado para preservar el contexto técnico.
+      </p>
+      <span class="document-id">RUN 20260723T141035640832Z-29df9929a1bd46fd86224394fc9228c5</span>
+    </header>
+
+    <section class="section" aria-labelledby="summary-title">
+      <div class="section-heading">
+        <h2 id="summary-title">Resumen de veredictos</h2>
+        <span class="section-index">01 / resultados</span>
+      </div>
+      <div class="summary-grid">
+        <article
+          class="summary-card"
+          data-summary-verdict="pass"
+          data-summary-count="12"
+        >
+          <span class="label">pass</span>
+          <strong class="summary-count">12</strong>
+        </article>
+        <article
+          class="summary-card"
+          data-summary-verdict="skipped"
+          data-summary-count="14"
+        >
+          <span class="label">skipped</span>
+          <strong class="summary-count">14</strong>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="identity-title">
+      <div class="section-heading">
+        <h2 id="identity-title">Identificación y alcance</h2>
+        <span class="section-index">02 / contexto</span>
+      </div>
+      <div class="identity-grid">
+        <div class="identity-block">
+          <span class="label">Suite</span>
+          <p class="identity-value">
+            verifactu-v0 · versión 0.1.0
+          </p>
+        </div>
+        <div class="identity-block">
+          <span class="label">Ruleset</span>
+          <p class="identity-value">
+            aeat-verifactu · versión 2026-07-23
+          </p>
+        </div>
+        <div class="identity-block">
+          <span class="label">Adaptador</span>
+          <p class="identity-value">fixture/0.1</p>
+        </div>
+        <div class="identity-block">
+          <span class="label">Estado del bundle</span>
+          <p class="identity-value">
+            complete ·
+            alcance completo: sí
+          </p>
+        </div>
+        <div class="identity-block scope">
+          <span class="label">Declaración de alcance</span>
+          <p class="identity-value">Run 20260723T141035640832Z-29df9929a1bd46fd86224394fc9228c5 sobre la suite verifactu-v0 0.1.0 con ruleset aeat-verifactu 2026-07-23 y adaptador fixture/0.1. Casos planificados: 26; ejecutados: 26; omitidos: 0. Alcance completo: sí (terminación: completed).</p>
+        </div>
+      </div>
+
+      <h3>Fuentes del ruleset</h3>
+      <ul class="source-list">
+        <li class="source-item">
+          <span class="source-title">AEAT · Detalle de las especificaciones técnicas para generación de la huella o hash de los registros de facturación</span>
+          <span class="source-detail">
+            versión 0.1.2 (27/08/2024) ·
+            localizador Secciones 2 (SHA-256, Lista L12), 3 (campos y orden), 5 (hex mayúsculas, 64), 6 (vectores oficiales)
+          </span>
+          <span class="source-detail">https://www.agenciatributaria.es/static_files/AEAT_Desarrolladores/EEDD/IVA/VERI-FACTU/Veri-Factu_especificaciones_huella_hash_registros.pdf</span>
+        </li>
+        <li class="source-item">
+          <span class="source-title">AEAT · Características del QR y especificaciones del servicio de cotejo o remisión</span>
+          <span class="source-detail">
+            versión 0.5.0 (10/12/2025) ·
+            localizador URL base ValidarQR, parámetros nif/numserie/fecha/importe en orden, URL-encoding UTF-8
+          </span>
+          <span class="source-detail">https://www.agenciatributaria.es/static_files/AEAT_Desarrolladores/EEDD/IVA/VERI-FACTU/DetalleEspecificacTecnCodigoQRfactura.pdf</span>
+        </li>
+        <li class="source-item">
+          <span class="source-title">AEAT · Documento de validaciones y errores (Sistemas Informáticos de Facturación y Sistemas VERI*FACTU)</span>
+          <span class="source-detail">
+            versión 1.2.2 ·
+            localizador Validaciones de FechaExpedicionFactura, ImporteTotal/CuotaTotal, NIF y huella (Aceptado con errores)
+          </span>
+          <span class="source-detail">https://www.agenciatributaria.es/static_files/AEAT_Desarrolladores/EEDD/IVA/VERI-FACTU/Validaciones_Errores_Veri-Factu.pdf</span>
+        </li>
+      </ul>
+    </section>
+
+    <section class="section" aria-labelledby="coverage-title">
+      <div class="section-heading">
+        <h2 id="coverage-title">Cobertura del corpus</h2>
+        <span class="section-index">03 / corpus</span>
+      </div>
+      <p>
+        <span class="coverage-total">26</span>
+        casos incluidos en el alcance seleccionado.
+      </p>
+      <div class="coverage-grid">
+        <div>
+          <h3>Por categoría</h3>
+          <table>
+            <thead>
+              <tr><th>Categoría</th><th>Casos</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>amounts</td><td class="mono">3</td></tr>
+              <tr><td>dates</td><td class="mono">1</td></tr>
+              <tr><td>hash</td><td class="mono">5</td></tr>
+              <tr><td>identity</td><td class="mono">1</td></tr>
+              <tr><td>lifecycle</td><td class="mono">5</td></tr>
+              <tr><td>qr</td><td class="mono">4</td></tr>
+              <tr><td>transport</td><td class="mono">1</td></tr>
+              <tr><td>xsd</td><td class="mono">6</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <h3>Por estado de investigación</h3>
+          <table>
+            <thead>
+              <tr><th>Estado</th><th>Casos</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>research_required</td><td class="mono">14</td></tr>
+              <tr><td>verified</td><td class="mono">12</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="cases-title">
+      <div class="section-heading">
+        <h2 id="cases-title">Resultados por caso</h2>
+        <span class="section-index">04 / detalle</span>
+      </div>
+      <article class="case-file">
+        <header class="case-header">
+          <div>
+            <span class="label">xsd-001</span>
+            <h3 class="case-title">Documento mínimo válido contra XSD versionado</h3>
+            <p class="case-meta">
+              categoría xsd · investigación research_required
+            </p>
+          </div>
+          <span class="verdict">skipped</span>
+        </header>
+        <div class="case-body">
+          <div class="result-grid">
+            <section class="result-panel">
+              <span class="label">Esperado</span>
+              <pre>{
+  "notes": "Hip\u00f3tesis: XML m\u00ednimo conforme valida. Bloqueado por licencia de redistribuci\u00f3n de los XSD (riesgo 9/D-007); el motor XSD est\u00e1 probado con esquemas sint\u00e9ticos.",
+  "reason_codes": [],
+  "status": "pass",
+  "validators": []
+}</pre>
+            </section>
+            <section class="result-panel">
+              <span class="label">Observado</span>
+              <pre>{
+  "code": null,
+  "execution_error": null,
+  "reason_codes": [
+    "RESEARCH_REQUIRED_NOT_RUN"
+  ],
+  "status": null
+}</pre>
+            </section>
+            <section class="result-panel result-panel--verdict">
+              <span class="label">Veredicto derivado</span>
+              <strong class="verdict-word">skipped</strong>
+              <ul class="reason-list">
+                <li>RESEARCH_REQUIRED_NOT_RUN</li>
+              </ul>
+            </section>
+          </div>
+
+          <div class="case-sources">
+            <h3>Evidencias</h3>
+            <ul class="evidence-list">
+              <li class="empty">El caso no referencia artefactos de evidencia.</li>
+            </ul>
+
+            <h3>Fuentes del caso</h3>
+            <ul class="source-list">
+              <li class="source-item">
+                <span class="source-title">AEAT · Esquemas VERI*FACTU (punto de entrada)</span>
+                <span class="source-detail">
+                  versión no declarada ·
+                  localizador no declarado
+                </span>
+                <span class="source-detail">https://sede.agenciatributaria.gob.es/Sede/iva/sistemas-informaticos-facturacion-verifactu/informacion-tecnica/esquemas.html</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </article>
+      <article class="case-file">
+        <header class="case-header">
+          <div>
+            <span class="label">xsd-002</span>
+            <h3 class="case-title">Falta un elemento obligatorio</h3>
+            <p class="case-meta">
+              categoría xsd · investigación research_required
+            </p>
+          </div>
+          <span class="verdict">skipped</span>
+        </header>
+        <div class="case-body">
+          <div class="result-grid">
+            <section class="result-panel">
+              <span class="label">Esperado</span>
+              <pre>{
+  "notes": "Hip\u00f3tesis: el XSD rechaza la ausencia de un elemento obligatorio.",
+  "reason_codes": [],
+  "status": "fail",
+  "validators": []
+}</pre>
+            </section>
+            <section class="result-panel">
+              <span class="label">Observado</span>
+              <pre>{
+  "code": null,
+  "execution_error": null,
+  "reason_codes": [
+    "RESEARCH_REQUIRED_NOT_RUN"
+  ],
+  "status": null
+}</pre>
+            </section>
+            <section class="result-panel result-panel--verdict">
+              <span class="label">Veredicto derivado</span>
+              <strong class="verdict-word">skipped</strong>
+              <ul class="reason-list">
+                <li>RESEARCH_REQUIRED_NOT_RUN</li>
+              </ul>
+            </section>
+          </div>
+
+          <div class="case-sources">
+            <h3>Evidencias</h3>
+            <ul class="evidence-list">
+              <li class="empty">El caso no referencia artefactos de evidencia.</li>
+            </ul>
+
+            <h3>Fuentes del caso</h3>
+            <ul class="source-list">
+              <li class="source-item">
+                <span class="source-title">AEAT · Esquemas VERI*FACTU (punto de entrada)</span>
+                <span class="source-detail">
+                  versión no declarada ·
+                  localizador no declarado
+                </span>
+                <span class="source-detail">https://sede.agenciatributaria.gob.es/Sede/iva/sistemas-informaticos-facturacion-verifactu/informacion-tecnica/esquemas.html</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </article>
+      <article class="case-file">
+        <header class="case-header">
+          <div>
+            <span class="label">xsd-003</span>
+            <h3 class="case-title">Enumeración no permitida</h3>
+            <p class="case-meta">
+              categoría xsd · investigación research_required
+            </p>
+          </div>
+          <span class="verdict">skipped</span>
+        </header>
+        <div class="case-body">
+          <div class="result-grid">
+            <section class="result-panel">
+              <span class="label">Esperado</span>
+              <pre>{
+  "notes": "Hip\u00f3tesis: valor fuera de cat\u00e1logo rechazado por el esquema.",
+  "reason_codes": [],
+  "status": "fail",
+  "validators": []
+}</pre>
+            </section>
+            <section class="result-panel">
+              <span class="label">Observado</span>
+              <pre>{
+  "code": null,
+  "execution_error": null,
+  "reason_codes": [
+    "RESEARCH_REQUIRED_NOT_RUN"
+  ],
+  "status": null
+}</pre>
+            </section>
+            <section class="result-panel result-panel--verdict">
+              <span class="label">Veredicto derivado</span>
+              <strong class="verdict-word">skipped</strong>
+              <ul class="reason-list">
+                <li>RESEARCH_REQUIRED_NOT_RUN</li>
+              </ul>
+            </section>
+          </div>
+
+          <div class="case-sources">
+            <h3>Evidencias</h3>
+            <ul class="evidence-list">
+              <li class="empty">El caso no referencia artefactos de evidencia.</li>
+            </ul>
+
+            <h3>Fuentes del caso</h3>
+            <ul class="source-list">
+              <li class="source-item">
+                <span class="source-title">AEAT · Esquemas VERI*FACTU (punto de entrada)</span>
+                <span class="source-detail">
+                  versión no declarada ·
+                  localizador no declarado
+                </span>
+                <span class="source-detail">https://sede.agenciatributaria.gob.es/Sede/iva/sistemas-informaticos-facturacion-verifactu/informacion-tecnica/esquemas.html</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </article>
+      <article class="case-file">
+        <header class="case-header">
+          <div>
+            <span class="label">xsd-004</span>
+            <h3 class="case-title">Longitud máxima excedida</h3>
+            <p class="case-meta">
+              categoría xsd · investigación research_required
+            </p>
+          </div>
+          <span class="verdict">skipped</span>
+        </header>
+        <div class="case-body">
+          <div class="result-grid">
+            <section class="result-panel">
+              <span class="label">Esperado</span>
+              <pre>{
+  "notes": "Hip\u00f3tesis: l\u00edmite de longitud del esquema aplicado.",
+  "reason_codes": [],
+  "status": "fail",
+  "validators": []
+}</pre>
+            </section>
+            <section class="result-panel">
+              <span class="label">Observado</span>
+              <pre>{
+  "code": null,
+  "execution_error": null,
+  "reason_codes": [
+    "RESEARCH_REQUIRED_NOT_RUN"
+  ],
+  "status": null
+}</pre>
+            </section>
+            <section class="result-panel result-panel--verdict">
+              <span class="label">Veredicto derivado</span>
+              <strong class="verdict-word">skipped</strong>
+              <ul class="reason-list">
+                <li>RESEARCH_REQUIRED_NOT_RUN</li>
+              </ul>
+            </section>
+          </div>
+
+          <div class="case-sources">
+            <h3>Evidencias</h3>
+            <ul class="evidence-list">
+              <li class="empty">El caso no referencia artefactos de evidencia.</li>
+            </ul>
+
+            <h3>Fuentes del caso</h3>
+            <ul class="source-list">
+              <li class="source-item">
+                <span class="source-title">AEAT · Esquemas VERI*FACTU (punto de entrada)</span>
+                <span class="source-detail">
+                  versión no declarada ·
+                  localizador no declarado
+                </span>
+                <span class="source-detail">https://sede.agenciatributaria.gob.es/Sede/iva/sistemas-informaticos-facturacion-verifactu/informacion-tecnica/esquemas.html</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </article>
+      <article class="case-file">
+        <header class="case-header">
+          <div>
+            <span class="label">xsd-005</span>
+            <h3 class="case-title">Elementos en orden no permitido</h3>
+            <p class="case-meta">
+              categoría xsd · investigación research_required
+            </p>
+          </div>
+          <span class="verdict">skipped</span>
+        </header>
+        <div class="case-body">
+          <div class="result-grid">
+            <section class="result-panel">
+              <span class="label">Esperado</span>
+              <pre>{
+  "notes": "Hip\u00f3tesis: secuencia del esquema estricta.",
+  "reason_codes": [],
+  "status": "fail",
+  "validators": []
+}</pre>
+            </section>
+            <section class="result-panel">
+              <span class="label">Observado</span>
+              <pre>{
+  "code": null,
+  "execution_error": null,
+  "reason_codes": [
+    "RESEARCH_REQUIRED_NOT_RUN"
+  ],
+  "status": null
+}</pre>
+            </section>
+            <section class="result-panel result-panel--verdict">
+              <span class="label">Veredicto derivado</span>
+              <strong class="verdict-word">skipped</strong>
+              <ul class="reason-list">
+                <li>RESEARCH_REQUIRED_NOT_RUN</li>
+              </ul>
+            </section>
+          </div>
+
+          <div class="case-sources">
+            <h3>Evidencias</h3>
+            <ul class="evidence-list">
+              <li class="empty">El caso no referencia artefactos de evidencia.</li>
+            </ul>
+
+            <h3>Fuentes del caso</h3>
+            <ul class="source-list">
+              <li class="source-item">
+                <span class="source-title">AEAT · Esquemas VERI*FACTU (punto de entrada)</span>
+                <span class="source-detail">
+                  versión no declarada ·
+                  localizador no declarado
+                </span>
+                <span class="source-detail">https://sede.agenciatributaria.gob.es/Sede/iva/sistemas-informaticos-facturacion-verifactu/informacion-tecnica/esquemas.html</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </article>
+      <article class="case-file">
+        <header class="case-header">
+          <div>
+            <span class="label">xsd-006</span>
+            <h3 class="case-title">UTF-8 y caracteres de control</h3>
+            <p class="case-meta">
+              categoría xsd · investigación research_required
+            </p>
+          </div>
+          <span class="verdict">skipped</span>
+        </header>
+        <div class="case-body">
+          <div class="result-grid">
+            <section class="result-panel">
+              <span class="label">Esperado</span>
+              <pre>{
+  "notes": "Hip\u00f3tesis: caracteres de control inv\u00e1lidos rechazados.",
+  "reason_codes": [],
+  "status": "fail",
+  "validators": []
+}</pre>
+            </section>
+            <section class="result-panel">
+              <span class="label">Observado</span>
+              <pre>{
+  "code": null,
+  "execution_error": null,
+  "reason_codes": [
+    "RESEARCH_REQUIRED_NOT_RUN"
+  ],
+  "status": null
+}</pre>
+            </section>
+            <section class="result-panel result-panel--verdict">
+              <span class="label">Veredicto derivado</span>
+              <strong class="verdict-word">skipped</strong>
+              <ul class="reason-list">
+                <li>RESEARCH_REQUIRED_NOT_RUN</li>
+              </ul>
+            </section>
+          </div>
+
+          <div class="case-sources">
+            <h3>Evidencias</h3>
+            <ul class="evidence-list">
+              <li class="empty">El caso no referencia artefactos de evidencia.</li>
+            </ul>
+
+            <h3>Fuentes del caso</h3>
+            <ul class="source-list">
+              <li class="source-item">
+                <span class="source-title">AEAT · Esquemas VERI*FACTU (punto de entrada)</span>
+                <span class="source-detail">
+                  versión no declarada ·
+                  localizador no declarado
+                </span>
+                <span class="source-detail">https://sede.agenciatributaria.gob.es/Sede/iva/sistemas-informaticos-facturacion-verifactu/informacion-tecnica/esquemas.html</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </article>
+      <article class="case-file">
+        <header class="case-header">
+          <div>
+            <span class="label">data-001</span>
+            <h3 class="case-title">Identificador fiscal con formato inválido</h3>
+            <p class="case-meta">
+              categoría identity · investigación research_required
+            </p>
+          </div>
+          <span class="verdict">skipped</span>
+        </header>
+        <div class="case-body">
+          <div class="result-grid">
+            <section class="result-panel">
+              <span class="label">Esperado</span>
+              <pre>{
+  "notes": "Hip\u00f3tesis: las validaciones v1.2.2 capturadas son censales (NIF identificado), no de formato puro; la regla de formato exacta y su aislamiento del censo quedan pendientes (revisi\u00f3n de Codex F7).",
+  "reason_codes": [
+    "SIF_REJECT_NIF_FORMAT"
+  ],
+  "status": "fail",
+  "validators": []
+}</pre>
+            </section>
+            <section class="result-panel">
+              <span class="label">Observado</span>
+              <pre>{
+  "code": null,
+  "execution_error": null,
+  "reason_codes": [
+    "RESEARCH_REQUIRED_NOT_RUN"
+  ],
+  "status": null
+}</pre>
+            </section>
+            <section class="result-panel result-panel--verdict">
+              <span class="label">Veredicto derivado</span>
+              <strong class="verdict-word">skipped</strong>
+              <ul class="reason-list">
+                <li>RESEARCH_REQUIRED_NOT_RUN</li>
+              </ul>
+            </section>
+          </div>
+
+          <div class="case-sources">
+            <h3>Evidencias</h3>
+            <ul class="evidence-list">
+              <li class="empty">El caso no referencia artefactos de evidencia.</li>
+            </ul>
+
+            <h3>Fuentes del caso</h3>
+            <ul class="source-list">
+              <li class="source-item">
+                <span class="source-title">AEAT · Documento de validaciones y errores (SIF y Sistemas VERI*FACTU)</span>
+                <span class="source-detail">
+                  versión no declarada ·
+                  localizador no declarado
+                </span>
+                <span class="source-detail">https://www.agenciatributaria.es/static_files/AEAT_Desarrolladores/EEDD/IVA/VERI-FACTU/Validaciones_Errores_Veri-Factu.pdf</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </article>
+      <article class="case-file">
+        <header class="case-header">
+          <div>
+            <span class="label">data-002</span>
+            <h3 class="case-title">Fecha de expedición futura</h3>
+            <p class="case-meta">
+              categoría dates · investigación verified
+            </p>
+          </div>
+          <span class="verdict">pass</span>
+        </header>
+        <div class="case-body">
+          <div class="result-grid">
+            <section class="result-panel">
+              <span class="label">Esperado</span>
+              <pre>{
+  "notes": "demo-sif simula el rechazo normativo de fecha futura.",
+  "reason_codes": [
+    "SIF_REJECT_DATE_FUTURE"
+  ],
+  "status": "fail",
+  "validators": []
+}</pre>
+            </section>
+            <section class="result-panel">
+              <span class="label">Observado</span>
+              <pre>{
+  "code": "SIF_REJECT_DATE_FUTURE",
+  "execution_error": null,
+  "reason_codes": [
+    "SIF_REJECT_DATE_FUTURE"
+  ],
+  "status": "fail"
+}</pre>
+            </section>
+            <section class="result-panel result-panel--verdict">
+              <span class="label">Veredicto derivado</span>
+              <strong class="verdict-word">pass</strong>
+              <ul class="reason-list">
+                <li>SIF_REJECT_DATE_FUTURE</li>
+              </ul>
+            </section>
+          </div>
+
+          <div class="case-sources">
+            <h3>Evidencias</h3>
+            <ul class="evidence-list">
+              <li class="evidence-item">
+                <strong>cases/data-002/input.json</strong>
+                <span class="evidence-hash">sha256:9a85c797adfc09a627249d4db8f49458fcb62e2cfddf5c580287073723cff4f4</span>
+                <span class="evidence-hash">
+                  application/json ·
+                  origen input ·
+                  redactada no ·
+                  truncada no
+                </span>
+              </li>
+              <li class="evidence-item">
+                <strong>cases/data-002/response.json</strong>
+                <span class="evidence-hash">sha256:2281d55b1df5add3847885294b8e05b798976254116dfbea1ca0a47696171e79</span>
+                <span class="evidence-hash">
+                  application/json ·
+                  origen response ·
+                  redactada no ·
+                  truncada no
+                </span>
+              </li>
+            </ul>
+
+            <h3>Fuentes del caso</h3>
+            <ul class="source-list">
+              <li class="source-item">
+                <span class="source-title">AEAT · Documento de validaciones y errores (SIF y Sistemas VERI*FACTU)</span>
+                <span class="source-detail">
+                  versión 1.2.2 ·
+                  localizador &#39;FechaExpedicionFactura no podrá ser superior a la fecha actual&#39; y &#39;no debe ser inferior a 28/10/2024&#39; (v1.2.2)
+                </span>
+                <span class="source-detail">https://www.agenciatributaria.es/static_files/AEAT_Desarrolladores/EEDD/IVA/VERI-FACTU/Validaciones_Errores_Veri-Factu.pdf</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </article>
+      <article class="case-file">
+        <header class="case-header">
+          <div>
+            <span class="label">data-003</span>
+            <h3 class="case-title">Importe con una posición decimal es válido para la huella</h3>
+            <p class="case-meta">
+              categoría amounts · investigación verified
+            </p>
+          </div>
+          <span class="verdict">pass</span>
+        </header>
+        <div class="case-body">
+          <div class="result-grid">
+            <section class="result-panel">
+              <span class="label">Esperado</span>
+              <pre>{
+  "notes": "Un SIF que genera la huella sobre \u0027123.1\u0027 produce una huella v\u00e1lida seg\u00fan el texto citado; el laboratorio no penaliza una posici\u00f3n decimal. NO se afirma que 123.1 y 123.10 produzcan el mismo hash (no lo hacen).",
+  "reason_codes": [
+    "HASH_CHAIN_OK"
+  ],
+  "status": "pass",
+  "validators": [
+    "hash_chain"
+  ]
+}</pre>
+            </section>
+            <section class="result-panel">
+              <span class="label">Observado</span>
+              <pre>{
+  "code": "SIF_ACCEPTED",
+  "execution_error": null,
+  "reason_codes": [
+    "SIF_ACCEPTED",
+    "HASH_CHAIN_OK"
+  ],
+  "status": "pass"
+}</pre>
+            </section>
+            <section class="result-panel result-panel--verdict">
+              <span class="label">Veredicto derivado</span>
+              <strong class="verdict-word">pass</strong>
+              <ul class="reason-list">
+                <li>SIF_ACCEPTED</li>
+                <li>HASH_CHAIN_OK</li>
+              </ul>
+            </section>
+          </div>
+
+          <div class="case-sources">
+            <h3>Evidencias</h3>
+            <ul class="evidence-list">
+              <li class="evidence-item">
+                <strong>cases/data-003/input.json</strong>
+                <span class="evidence-hash">sha256:4202343e9cfa4d22dd98ef48e0a85e77eacd5ec2db16fae8b371aac603595b47</span>
+                <span class="evidence-hash">
+                  application/json ·
+                  origen input ·
+                  redactada no ·
+                  truncada no
+                </span>
+              </li>
+              <li class="evidence-item">
+                <strong>cases/data-003/response.json</strong>
+                <span class="evidence-hash">sha256:97012b160dfdc0ca4f41c29dfe3d8734682c06d26424887f7934dc567cbd0608</span>
+                <span class="evidence-hash">
+                  application/json ·
+                  origen response ·
+                  redactada no ·
+                  truncada no
+                </span>
+              </li>
+            </ul>
+
+            <h3>Fuentes del caso</h3>
+            <ul class="source-list">
+              <li class="source-item">
+                <span class="source-title">AEAT · Detalle de las especificaciones técnicas para generación de la huella o hash de los registros de facturación</span>
+                <span class="source-detail">
+                  versión 0.1.2 (27/08/2024) ·
+                  localizador §3 (revisión 0.1.2): &#39;en los campos numéricos se trataran indistintamente los valores con una o dos posiciones en los decimales... todos igualmente válidos para la generación de la huella&#39;
+                </span>
+                <span class="source-detail">https://www.agenciatributaria.es/static_files/AEAT_Desarrolladores/EEDD/IVA/VERI-FACTU/Veri-Factu_especificaciones_huella_hash_registros.pdf</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </article>
+      <article class="case-file">
+        <header class="case-header">
+          <div>
+            <span class="label">data-004</span>
+            <h3 class="case-title">Totales incoherentes con el desglose</h3>
+            <p class="case-meta">
+              categoría amounts · investigación verified
+            </p>
+          </div>
+          <span class="verdict">pass</span>
+        </header>
+        <div class="case-body">
+          <div class="result-grid">
+            <section class="result-panel">
+              <span class="label">Esperado</span>
+              <pre>{
+  "notes": "El input lleva desglose BaseImponible=100.00 y CuotaTotal=21.00 (total coherente 121.00); la mutaci\u00f3n fija ImporteTotal=999.99, incoherente con el desglose, violando directamente la regla de ajuste citada. demo-sif simula el rechazo que la regla exige.",
+  "reason_codes": [
+    "SIF_REJECT_TOTAL_MISMATCH"
+  ],
+  "status": "fail",
+  "validators": []
+}</pre>
+            </section>
+            <section class="result-panel">
+              <span class="label">Observado</span>
+              <pre>{
+  "code": "SIF_REJECT_TOTAL_MISMATCH",
+  "execution_error": null,
+  "reason_codes": [
+    "SIF_REJECT_TOTAL_MISMATCH"
+  ],
+  "status": "fail"
+}</pre>
+            </section>
+            <section class="result-panel result-panel--verdict">
+              <span class="label">Veredicto derivado</span>
+              <strong class="verdict-word">pass</strong>
+              <ul class="reason-list">
+                <li>SIF_REJECT_TOTAL_MISMATCH</li>
+              </ul>
+            </section>
+          </div>
+
+          <div class="case-sources">
+            <h3>Evidencias</h3>
+            <ul class="evidence-list">
+              <li class="evidence-item">
+                <strong>cases/data-004/input.json</strong>
+                <span class="evidence-hash">sha256:1d84277f31077f211c1008eabc5ed9664aea43691ad2f596900c53a43294a880</span>
+                <span class="evidence-hash">
+                  application/json ·
+                  origen input ·
+                  redactada no ·
+                  truncada no
+                </span>
+              </li>
+              <li class="evidence-item">
+                <strong>cases/data-004/response.json</strong>
+                <span class="evidence-hash">sha256:9b9036c54cf930011e0669b722002bcbb09f6f45072c7270543b572dae654d6c</span>
+                <span class="evidence-hash">
+                  application/json ·
+                  origen response ·
+                  redactada no ·
+                  truncada no
+                </span>
+              </li>
+            </ul>
+
+            <h3>Fuentes del caso</h3>
+            <ul class="source-list">
+              <li class="source-item">
+                <span class="source-title">AEAT · Documento de validaciones y errores (SIF y Sistemas VERI*FACTU)</span>
+                <span class="source-detail">
+                  versión 1.2.2 ·
+                  localizador &#39;ImporteTotal no cumple la validación especificada en cuanto a ajuste&#39; (validación aritmética de ImporteTotal frente al desglose, v1.2.2)
+                </span>
+                <span class="source-detail">https://www.agenciatributaria.es/static_files/AEAT_Desarrolladores/EEDD/IVA/VERI-FACTU/Validaciones_Errores_Veri-Factu.pdf</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </article>
+      <article class="case-file">
+        <header class="case-header">
+          <div>
+            <span class="label">data-005</span>
+            <h3 class="case-title">Caso límite de redondeo</h3>
+            <p class="case-meta">
+              categoría amounts · investigación research_required
+            </p>
+          </div>
+          <span class="verdict">skipped</span>
+        </header>
+        <div class="case-body">
+          <div class="result-grid">
+            <section class="result-panel">
+              <span class="label">Esperado</span>
+              <pre>{
+  "notes": "Hip\u00f3tesis: tolerancia de redondeo del ajuste aritm\u00e9tico no capturada a\u00fan (detalle exacto pendiente).",
+  "reason_codes": [],
+  "status": "pass",
+  "validators": []
+}</pre>
+            </section>
+            <section class="result-panel">
+              <span class="label">Observado</span>
+              <pre>{
+  "code": null,
+  "execution_error": null,
+  "reason_codes": [
+    "RESEARCH_REQUIRED_NOT_RUN"
+  ],
+  "status": null
+}</pre>
+            </section>
+            <section class="result-panel result-panel--verdict">
+              <span class="label">Veredicto derivado</span>
+              <strong class="verdict-word">skipped</strong>
+              <ul class="reason-list">
+                <li>RESEARCH_REQUIRED_NOT_RUN</li>
+              </ul>
+            </section>
+          </div>
+
+          <div class="case-sources">
+            <h3>Evidencias</h3>
+            <ul class="evidence-list">
+              <li class="empty">El caso no referencia artefactos de evidencia.</li>
+            </ul>
+
+            <h3>Fuentes del caso</h3>
+            <ul class="source-list">
+              <li class="source-item">
+                <span class="source-title">AEAT · Documento de validaciones y errores (índice)</span>
+                <span class="source-detail">
+                  versión no declarada ·
+                  localizador no declarado
+                </span>
+                <span class="source-detail">https://www.agenciatributaria.es/AEAT.desarrolladores/Desarrolladores/_menu_/Documentacion/Sistemas_Informaticos_de_Facturacion_y_Sistemas_VERI_FACTU/Validaciones_y_errores/Validaciones_y_errores.html</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </article>
+      <article class="case-file">
+        <header class="case-header">
+          <div>
+            <span class="label">hash-001</span>
+            <h3 class="case-title">Primer registro de la cadena (Huella= vacía)</h3>
+            <p class="case-meta">
+              categoría hash · investigación verified
+            </p>
+          </div>
+          <span class="verdict">pass</span>
+        </header>
+        <div class="case-body">
+          <div class="result-grid">
+            <section class="result-panel">
+              <span class="label">Esperado</span>
+              <pre>{
+  "notes": "Vector oficial AEAT reproducido por el laboratorio (3/3 MATCH).",
+  "reason_codes": [
+    "HASH_CHAIN_OK"
+  ],
+  "status": "pass",
+  "validators": [
+    "hash_chain"
+  ]
+}</pre>
+            </section>
+            <section class="result-panel">
+              <span class="label">Observado</span>
+              <pre>{
+  "code": "SIF_ACCEPTED",
+  "execution_error": null,
+  "reason_codes": [
+    "SIF_ACCEPTED",
+    "HASH_CHAIN_OK"
+  ],
+  "status": "pass"
+}</pre>
+            </section>
+            <section class="result-panel result-panel--verdict">
+              <span class="label">Veredicto derivado</span>
+              <strong class="verdict-word">pass</strong>
+              <ul class="reason-list">
+                <li>SIF_ACCEPTED</li>
+                <li>HASH_CHAIN_OK</li>
+              </ul>
+            </section>
+          </div>
+
+          <div class="case-sources">
+            <h3>Evidencias</h3>
+            <ul class="evidence-list">
+              <li class="evidence-item">
+                <strong>cases/hash-001/input.json</strong>
+                <span class="evidence-hash">sha256:d305608463b548587f8043e5a43c64d0907af3d8c06ede66ba59e7ebf3fa1cc9</span>
+                <span class="evidence-hash">
+                  application/json ·
+                  origen input ·
+                  redactada no ·
+                  truncada no
+                </span>
+              </li>
+              <li class="evidence-item">
+                <strong>cases/hash-001/response.json</strong>
+                <span class="evidence-hash">sha256:20ec737b055e3774bae22f3f1bc60bcd025b036a2e814782021b73bd59b5a146</span>
+                <span class="evidence-hash">
+                  application/json ·
+                  origen response ·
+                  redactada no ·
+                  truncada no
+                </span>
+              </li>
+            </ul>
+
+            <h3>Fuentes del caso</h3>
+            <ul class="source-list">
+              <li class="source-item">
+                <span class="source-title">AEAT · Detalle de las especificaciones técnicas para generación de la huella o hash de los registros de facturación</span>
+                <span class="source-detail">
+                  versión 0.1.2 (27/08/2024) ·
+                  localizador §6.1 Caso 1: primer registro, campo Huella sin contenido; hash esperado 3C464DAF…F12F60
+                </span>
+                <span class="source-detail">https://www.agenciatributaria.es/static_files/AEAT_Desarrolladores/EEDD/IVA/VERI-FACTU/Veri-Factu_especificaciones_huella_hash_registros.pdf</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </article>
+      <article class="case-file">
+        <header class="case-header">
+          <div>
+            <span class="label">hash-002</span>
+            <h3 class="case-title">Segundo registro correctamente encadenado</h3>
+            <p class="case-meta">
+              categoría hash · investigación verified
+            </p>
+          </div>
+          <span class="verdict">pass</span>
+        </header>
+        <div class="case-body">
+          <div class="result-grid">
+            <section class="result-panel">
+              <span class="label">Esperado</span>
+              <pre>{
+  "notes": "Cadena oficial de dos registros.",
+  "reason_codes": [
+    "HASH_CHAIN_OK"
+  ],
+  "status": "pass",
+  "validators": [
+    "hash_chain"
+  ]
+}</pre>
+            </section>
+            <section class="result-panel">
+              <span class="label">Observado</span>
+              <pre>{
+  "code": "SIF_ACCEPTED",
+  "execution_error": null,
+  "reason_codes": [
+    "SIF_ACCEPTED",
+    "HASH_CHAIN_OK"
+  ],
+  "status": "pass"
+}</pre>
+            </section>
+            <section class="result-panel result-panel--verdict">
+              <span class="label">Veredicto derivado</span>
+              <strong class="verdict-word">pass</strong>
+              <ul class="reason-list">
+                <li>SIF_ACCEPTED</li>
+                <li>HASH_CHAIN_OK</li>
+              </ul>
+            </section>
+          </div>
+
+          <div class="case-sources">
+            <h3>Evidencias</h3>
+            <ul class="evidence-list">
+              <li class="evidence-item">
+                <strong>cases/hash-002/input.json</strong>
+                <span class="evidence-hash">sha256:3cefec6c63e8cbac8a55ef88b09d468eccb582c7e3fa64c659e5ac0664f7a18e</span>
+                <span class="evidence-hash">
+                  application/json ·
+                  origen input ·
+                  redactada no ·
+                  truncada no
+                </span>
+              </li>
+              <li class="evidence-item">
+                <strong>cases/hash-002/response.json</strong>
+                <span class="evidence-hash">sha256:66cb4106323f3794edb989133c6fa0f069c725eeb0a7b8ea2dc5a3fc72b73384</span>
+                <span class="evidence-hash">
+                  application/json ·
+                  origen response ·
+                  redactada no ·
+                  truncada no
+                </span>
+              </li>
+            </ul>
+
+            <h3>Fuentes del caso</h3>
+            <ul class="source-list">
+              <li class="source-item">
+                <span class="source-title">AEAT · Detalle de las especificaciones técnicas para generación de la huella o hash de los registros de facturación</span>
+                <span class="source-detail">
+                  versión 0.1.2 (27/08/2024) ·
+                  localizador §6.2 Caso 2: registro con anterior existente; hash esperado F7B94C…2B97
+                </span>
+                <span class="source-detail">https://www.agenciatributaria.es/static_files/AEAT_Desarrolladores/EEDD/IVA/VERI-FACTU/Veri-Factu_especificaciones_huella_hash_registros.pdf</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </article>
+      <article class="case-file">
+        <header class="case-header">
+          <div>
+            <span class="label">hash-003</span>
+            <h3 class="case-title">Huella anterior incorrecta (cadena rota)</h3>
+            <p class="case-meta">
+              categoría hash · investigación verified
+            </p>
+          </div>
+          <span class="verdict">pass</span>
+        </header>
+        <div class="case-body">
+          <div class="result-grid">
+            <section class="result-panel">
+              <span class="label">Esperado</span>
+              <pre>{
+  "notes": "Fallo sembrado en demo-sif: HuellaAnterior=000\u20260 con registro autoconsistente.",
+  "reason_codes": [
+    "HASH_CHAIN_BROKEN"
+  ],
+  "status": "fail",
+  "validators": [
+    "hash_chain"
+  ]
+}</pre>
+            </section>
+            <section class="result-panel">
+              <span class="label">Observado</span>
+              <pre>{
+  "code": "SIF_ACCEPTED",
+  "execution_error": null,
+  "reason_codes": [
+    "SIF_ACCEPTED",
+    "HASH_CHAIN_BROKEN"
+  ],
+  "status": "fail"
+}</pre>
+            </section>
+            <section class="result-panel result-panel--verdict">
+              <span class="label">Veredicto derivado</span>
+              <strong class="verdict-word">pass</strong>
+              <ul class="reason-list">
+                <li>SIF_ACCEPTED</li>
+                <li>HASH_CHAIN_BROKEN</li>
+              </ul>
+            </section>
+          </div>
+
+          <div class="case-sources">
+            <h3>Evidencias</h3>
+            <ul class="evidence-list">
+              <li class="evidence-item">
+                <strong>cases/hash-003/input.json</strong>
+                <span class="evidence-hash">sha256:f0e5d585f1f908e973970f33dbace880279322a482472596b16e35bcc704aa6a</span>
+                <span class="evidence-hash">
+                  application/json ·
+                  origen input ·
+                  redactada no ·
+                  truncada no
+                </span>
+              </li>
+              <li class="evidence-item">
+                <strong>cases/hash-003/response.json</strong>
+                <span class="evidence-hash">sha256:b8e12184400c6bfc06e365870b7b843565705b160dcbd7bc48e72bc5469e0bee</span>
+                <span class="evidence-hash">
+                  application/json ·
+                  origen response ·
+                  redactada no ·
+                  truncada no
+                </span>
+              </li>
+            </ul>
+
+            <h3>Fuentes del caso</h3>
+            <ul class="source-list">
+              <li class="source-item">
+                <span class="source-title">AEAT · Detalle de las especificaciones técnicas para generación de la huella o hash de los registros de facturación</span>
+                <span class="source-detail">
+                  versión 0.1.2 (27/08/2024) ·
+                  localizador §3a campo 7 Huella (RegistroAnterior) + §7 Validación: huella no coincidente -&gt; &#39;Aceptado con errores&#39;
+                </span>
+                <span class="source-detail">https://www.agenciatributaria.es/static_files/AEAT_Desarrolladores/EEDD/IVA/VERI-FACTU/Veri-Factu_especificaciones_huella_hash_registros.pdf</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </article>
+      <article class="case-file">
+        <header class="case-header">
+          <div>
+            <span class="label">hash-004</span>
+            <h3 class="case-title">Registro alterado tras calcular la huella</h3>
+            <p class="case-meta">
+              categoría hash · investigación verified
+            </p>
+          </div>
+          <span class="verdict">pass</span>
+        </header>
+        <div class="case-body">
+          <div class="result-grid">
+            <section class="result-panel">
+              <span class="label">Esperado</span>
+              <pre>{
+  "notes": "Fallo sembrado: ImporteTotal alterado a 999.99 conservando la huella original.",
+  "reason_codes": [
+    "HASH_MISMATCH"
+  ],
+  "status": "fail",
+  "validators": [
+    "hash_chain"
+  ]
+}</pre>
+            </section>
+            <section class="result-panel">
+              <span class="label">Observado</span>
+              <pre>{
+  "code": "SIF_ACCEPTED",
+  "execution_error": null,
+  "reason_codes": [
+    "SIF_ACCEPTED",
+    "HASH_MISMATCH"
+  ],
+  "status": "fail"
+}</pre>
+            </section>
+            <section class="result-panel result-panel--verdict">
+              <span class="label">Veredicto derivado</span>
+              <strong class="verdict-word">pass</strong>
+              <ul class="reason-list">
+                <li>SIF_ACCEPTED</li>
+                <li>HASH_MISMATCH</li>
+              </ul>
+            </section>
+          </div>
+
+          <div class="case-sources">
+            <h3>Evidencias</h3>
+            <ul class="evidence-list">
+              <li class="evidence-item">
+                <strong>cases/hash-004/input.json</strong>
+                <span class="evidence-hash">sha256:dfcdac86b8537eff8f92fe8cb1a6703039bcc40bc0696f5907b0ffde85d968e0</span>
+                <span class="evidence-hash">
+                  application/json ·
+                  origen input ·
+                  redactada no ·
+                  truncada no
+                </span>
+              </li>
+              <li class="evidence-item">
+                <strong>cases/hash-004/response.json</strong>
+                <span class="evidence-hash">sha256:320d7bcdacb94fe6ca781016e6a5f3bb64a82540be48645f7caf4ee6c92803ac</span>
+                <span class="evidence-hash">
+                  application/json ·
+                  origen response ·
+                  redactada no ·
+                  truncada no
+                </span>
+              </li>
+            </ul>
+
+            <h3>Fuentes del caso</h3>
+            <ul class="source-list">
+              <li class="source-item">
+                <span class="source-title">AEAT · Detalle de las especificaciones técnicas para generación de la huella o hash de los registros de facturación</span>
+                <span class="source-detail">
+                  versión 0.1.2 (27/08/2024) ·
+                  localizador §5 Datos de salida (la huella propia se informa en RegistroAlta/Huella) + §7 Validación (huella no coincidente -&gt; &#39;Aceptado con errores&#39;)
+                </span>
+                <span class="source-detail">https://www.agenciatributaria.es/static_files/AEAT_Desarrolladores/EEDD/IVA/VERI-FACTU/Veri-Factu_especificaciones_huella_hash_registros.pdf</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </article>
+      <article class="case-file">
+        <header class="case-header">
+          <div>
+            <span class="label">hash-005</span>
+            <h3 class="case-title">Concatenación en orden incorrecto</h3>
+            <p class="case-meta">
+              categoría hash · investigación verified
+            </p>
+          </div>
+          <span class="verdict">pass</span>
+        </header>
+        <div class="case-body">
+          <div class="result-grid">
+            <section class="result-panel">
+              <span class="label">Esperado</span>
+              <pre>{
+  "notes": "Fallo sembrado: huella calculada con CuotaTotal e ImporteTotal intercambiados.",
+  "reason_codes": [
+    "HASH_MISMATCH"
+  ],
+  "status": "fail",
+  "validators": [
+    "hash_chain"
+  ]
+}</pre>
+            </section>
+            <section class="result-panel">
+              <span class="label">Observado</span>
+              <pre>{
+  "code": "SIF_ACCEPTED",
+  "execution_error": null,
+  "reason_codes": [
+    "SIF_ACCEPTED",
+    "HASH_MISMATCH"
+  ],
+  "status": "fail"
+}</pre>
+            </section>
+            <section class="result-panel result-panel--verdict">
+              <span class="label">Veredicto derivado</span>
+              <strong class="verdict-word">pass</strong>
+              <ul class="reason-list">
+                <li>SIF_ACCEPTED</li>
+                <li>HASH_MISMATCH</li>
+              </ul>
+            </section>
+          </div>
+
+          <div class="case-sources">
+            <h3>Evidencias</h3>
+            <ul class="evidence-list">
+              <li class="evidence-item">
+                <strong>cases/hash-005/input.json</strong>
+                <span class="evidence-hash">sha256:05657368283a301a00dc95afa017709d749f5868380a5b10de56b33a75088dc1</span>
+                <span class="evidence-hash">
+                  application/json ·
+                  origen input ·
+                  redactada no ·
+                  truncada no
+                </span>
+              </li>
+              <li class="evidence-item">
+                <strong>cases/hash-005/response.json</strong>
+                <span class="evidence-hash">sha256:6e7ede38607c87e202c3e68d55b25ecb6336d32a5d3f290f9a53d6284afd0767</span>
+                <span class="evidence-hash">
+                  application/json ·
+                  origen response ·
+                  redactada no ·
+                  truncada no
+                </span>
+              </li>
+            </ul>
+
+            <h3>Fuentes del caso</h3>
+            <ul class="source-list">
+              <li class="source-item">
+                <span class="source-title">AEAT · Detalle de las especificaciones técnicas para generación de la huella o hash de los registros de facturación</span>
+                <span class="source-detail">
+                  versión 0.1.2 (27/08/2024) ·
+                  localizador §3: &#39;en el orden enunciado, que coincide con su aparición en los diseños de registro&#39;
+                </span>
+                <span class="source-detail">https://www.agenciatributaria.es/static_files/AEAT_Desarrolladores/EEDD/IVA/VERI-FACTU/Veri-Factu_especificaciones_huella_hash_registros.pdf</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </article>
+      <article class="case-file">
+        <header class="case-header">
+          <div>
+            <span class="label">life-001</span>
+            <h3 class="case-title">Reenvío idéntico tras timeout</h3>
+            <p class="case-meta">
+              categoría lifecycle · investigación research_required
+            </p>
+          </div>
+          <span class="verdict">skipped</span>
+        </header>
+        <div class="case-body">
+          <div class="result-grid">
+            <section class="result-panel">
+              <span class="label">Esperado</span>
+              <pre>{
+  "notes": "Hip\u00f3tesis. Requiere secuencia multi-invocaci\u00f3n (OS-13).",
+  "reason_codes": [],
+  "status": "pass",
+  "validators": []
+}</pre>
+            </section>
+            <section class="result-panel">
+              <span class="label">Observado</span>
+              <pre>{
+  "code": null,
+  "execution_error": null,
+  "reason_codes": [
+    "RESEARCH_REQUIRED_NOT_RUN"
+  ],
+  "status": null
+}</pre>
+            </section>
+            <section class="result-panel result-panel--verdict">
+              <span class="label">Veredicto derivado</span>
+              <strong class="verdict-word">skipped</strong>
+              <ul class="reason-list">
+                <li>RESEARCH_REQUIRED_NOT_RUN</li>
+              </ul>
+            </section>
+          </div>
+
+          <div class="case-sources">
+            <h3>Evidencias</h3>
+            <ul class="evidence-list">
+              <li class="empty">El caso no referencia artefactos de evidencia.</li>
+            </ul>
+
+            <h3>Fuentes del caso</h3>
+            <ul class="source-list">
+              <li class="source-item">
+                <span class="source-title">AEAT · Especificaciones de remisión voluntaria (punto de entrada)</span>
+                <span class="source-detail">
+                  versión no declarada ·
+                  localizador no declarado
+                </span>
+                <span class="source-detail">https://sede.agenciatributaria.gob.es/Sede/iva/sistemas-informaticos-facturacion-verifactu/informacion-tecnica/especificaciones-servicios-remision-voluntaria-registros-validaciones.html</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </article>
+      <article class="case-file">
+        <header class="case-header">
+          <div>
+            <span class="label">life-002</span>
+            <h3 class="case-title">Duplicado con contenido distinto</h3>
+            <p class="case-meta">
+              categoría lifecycle · investigación research_required
+            </p>
+          </div>
+          <span class="verdict">skipped</span>
+        </header>
+        <div class="case-body">
+          <div class="result-grid">
+            <section class="result-panel">
+              <span class="label">Esperado</span>
+              <pre>{
+  "notes": "Hip\u00f3tesis. OS-13.",
+  "reason_codes": [],
+  "status": "fail",
+  "validators": []
+}</pre>
+            </section>
+            <section class="result-panel">
+              <span class="label">Observado</span>
+              <pre>{
+  "code": null,
+  "execution_error": null,
+  "reason_codes": [
+    "RESEARCH_REQUIRED_NOT_RUN"
+  ],
+  "status": null
+}</pre>
+            </section>
+            <section class="result-panel result-panel--verdict">
+              <span class="label">Veredicto derivado</span>
+              <strong class="verdict-word">skipped</strong>
+              <ul class="reason-list">
+                <li>RESEARCH_REQUIRED_NOT_RUN</li>
+              </ul>
+            </section>
+          </div>
+
+          <div class="case-sources">
+            <h3>Evidencias</h3>
+            <ul class="evidence-list">
+              <li class="empty">El caso no referencia artefactos de evidencia.</li>
+            </ul>
+
+            <h3>Fuentes del caso</h3>
+            <ul class="source-list">
+              <li class="source-item">
+                <span class="source-title">AEAT · Especificaciones de remisión voluntaria (punto de entrada)</span>
+                <span class="source-detail">
+                  versión no declarada ·
+                  localizador no declarado
+                </span>
+                <span class="source-detail">https://sede.agenciatributaria.gob.es/Sede/iva/sistemas-informaticos-facturacion-verifactu/informacion-tecnica/especificaciones-servicios-remision-voluntaria-registros-validaciones.html</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </article>
+      <article class="case-file">
+        <header class="case-header">
+          <div>
+            <span class="label">life-003</span>
+            <h3 class="case-title">Subsanación de registro rechazado</h3>
+            <p class="case-meta">
+              categoría lifecycle · investigación research_required
+            </p>
+          </div>
+          <span class="verdict">skipped</span>
+        </header>
+        <div class="case-body">
+          <div class="result-grid">
+            <section class="result-panel">
+              <span class="label">Esperado</span>
+              <pre>{
+  "notes": "Hip\u00f3tesis. OS-13.",
+  "reason_codes": [],
+  "status": "pass",
+  "validators": []
+}</pre>
+            </section>
+            <section class="result-panel">
+              <span class="label">Observado</span>
+              <pre>{
+  "code": null,
+  "execution_error": null,
+  "reason_codes": [
+    "RESEARCH_REQUIRED_NOT_RUN"
+  ],
+  "status": null
+}</pre>
+            </section>
+            <section class="result-panel result-panel--verdict">
+              <span class="label">Veredicto derivado</span>
+              <strong class="verdict-word">skipped</strong>
+              <ul class="reason-list">
+                <li>RESEARCH_REQUIRED_NOT_RUN</li>
+              </ul>
+            </section>
+          </div>
+
+          <div class="case-sources">
+            <h3>Evidencias</h3>
+            <ul class="evidence-list">
+              <li class="empty">El caso no referencia artefactos de evidencia.</li>
+            </ul>
+
+            <h3>Fuentes del caso</h3>
+            <ul class="source-list">
+              <li class="source-item">
+                <span class="source-title">AEAT · Especificaciones de remisión voluntaria (punto de entrada)</span>
+                <span class="source-detail">
+                  versión no declarada ·
+                  localizador no declarado
+                </span>
+                <span class="source-detail">https://sede.agenciatributaria.gob.es/Sede/iva/sistemas-informaticos-facturacion-verifactu/informacion-tecnica/especificaciones-servicios-remision-voluntaria-registros-validaciones.html</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </article>
+      <article class="case-file">
+        <header class="case-header">
+          <div>
+            <span class="label">life-004</span>
+            <h3 class="case-title">Anulación de registro existente</h3>
+            <p class="case-meta">
+              categoría lifecycle · investigación research_required
+            </p>
+          </div>
+          <span class="verdict">skipped</span>
+        </header>
+        <div class="case-body">
+          <div class="result-grid">
+            <section class="result-panel">
+              <span class="label">Esperado</span>
+              <pre>{
+  "notes": "Hip\u00f3tesis. El \u00a73b (RegistroAnulacion) ya est\u00e1 capturado; falta poder expresar la secuencia (OS-13).",
+  "reason_codes": [],
+  "status": "pass",
+  "validators": []
+}</pre>
+            </section>
+            <section class="result-panel">
+              <span class="label">Observado</span>
+              <pre>{
+  "code": null,
+  "execution_error": null,
+  "reason_codes": [
+    "RESEARCH_REQUIRED_NOT_RUN"
+  ],
+  "status": null
+}</pre>
+            </section>
+            <section class="result-panel result-panel--verdict">
+              <span class="label">Veredicto derivado</span>
+              <strong class="verdict-word">skipped</strong>
+              <ul class="reason-list">
+                <li>RESEARCH_REQUIRED_NOT_RUN</li>
+              </ul>
+            </section>
+          </div>
+
+          <div class="case-sources">
+            <h3>Evidencias</h3>
+            <ul class="evidence-list">
+              <li class="empty">El caso no referencia artefactos de evidencia.</li>
+            </ul>
+
+            <h3>Fuentes del caso</h3>
+            <ul class="source-list">
+              <li class="source-item">
+                <span class="source-title">AEAT · Detalle de las especificaciones técnicas para generación de la huella o hash de los registros de facturación</span>
+                <span class="source-detail">
+                  versión no declarada ·
+                  localizador no declarado
+                </span>
+                <span class="source-detail">https://www.agenciatributaria.es/static_files/AEAT_Desarrolladores/EEDD/IVA/VERI-FACTU/Veri-Factu_especificaciones_huella_hash_registros.pdf</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </article>
+      <article class="case-file">
+        <header class="case-header">
+          <div>
+            <span class="label">life-005</span>
+            <h3 class="case-title">Anulación de registro inexistente</h3>
+            <p class="case-meta">
+              categoría lifecycle · investigación research_required
+            </p>
+          </div>
+          <span class="verdict">skipped</span>
+        </header>
+        <div class="case-body">
+          <div class="result-grid">
+            <section class="result-panel">
+              <span class="label">Esperado</span>
+              <pre>{
+  "notes": "Hip\u00f3tesis. OS-13.",
+  "reason_codes": [],
+  "status": "fail",
+  "validators": []
+}</pre>
+            </section>
+            <section class="result-panel">
+              <span class="label">Observado</span>
+              <pre>{
+  "code": null,
+  "execution_error": null,
+  "reason_codes": [
+    "RESEARCH_REQUIRED_NOT_RUN"
+  ],
+  "status": null
+}</pre>
+            </section>
+            <section class="result-panel result-panel--verdict">
+              <span class="label">Veredicto derivado</span>
+              <strong class="verdict-word">skipped</strong>
+              <ul class="reason-list">
+                <li>RESEARCH_REQUIRED_NOT_RUN</li>
+              </ul>
+            </section>
+          </div>
+
+          <div class="case-sources">
+            <h3>Evidencias</h3>
+            <ul class="evidence-list">
+              <li class="empty">El caso no referencia artefactos de evidencia.</li>
+            </ul>
+
+            <h3>Fuentes del caso</h3>
+            <ul class="source-list">
+              <li class="source-item">
+                <span class="source-title">AEAT · Especificaciones de remisión voluntaria (punto de entrada)</span>
+                <span class="source-detail">
+                  versión no declarada ·
+                  localizador no declarado
+                </span>
+                <span class="source-detail">https://sede.agenciatributaria.gob.es/Sede/iva/sistemas-informaticos-facturacion-verifactu/informacion-tecnica/especificaciones-servicios-remision-voluntaria-registros-validaciones.html</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </article>
+      <article class="case-file">
+        <header class="case-header">
+          <div>
+            <span class="label">qr-001</span>
+            <h3 class="case-title">QR válido y coherente con el registro</h3>
+            <p class="case-meta">
+              categoría qr · investigación verified
+            </p>
+          </div>
+          <span class="verdict">pass</span>
+        </header>
+        <div class="case-body">
+          <div class="result-grid">
+            <section class="result-panel">
+              <span class="label">Esperado</span>
+              <pre>{
+  "notes": "Payload del ejemplo oficial, coherente con el registro del target.",
+  "reason_codes": [
+    "QR_OK"
+  ],
+  "status": "pass",
+  "validators": [
+    "qr"
+  ]
+}</pre>
+            </section>
+            <section class="result-panel">
+              <span class="label">Observado</span>
+              <pre>{
+  "code": "SIF_ACCEPTED",
+  "execution_error": null,
+  "reason_codes": [
+    "SIF_ACCEPTED",
+    "QR_OK"
+  ],
+  "status": "pass"
+}</pre>
+            </section>
+            <section class="result-panel result-panel--verdict">
+              <span class="label">Veredicto derivado</span>
+              <strong class="verdict-word">pass</strong>
+              <ul class="reason-list">
+                <li>SIF_ACCEPTED</li>
+                <li>QR_OK</li>
+              </ul>
+            </section>
+          </div>
+
+          <div class="case-sources">
+            <h3>Evidencias</h3>
+            <ul class="evidence-list">
+              <li class="evidence-item">
+                <strong>cases/qr-001/input.json</strong>
+                <span class="evidence-hash">sha256:49d0f09afcb7298b9e28f76fea5e67509291b18fe1e4f8f2bf971d3c1bf23cc5</span>
+                <span class="evidence-hash">
+                  application/json ·
+                  origen input ·
+                  redactada no ·
+                  truncada no
+                </span>
+              </li>
+              <li class="evidence-item">
+                <strong>cases/qr-001/response.json</strong>
+                <span class="evidence-hash">sha256:4b331d8c910b61c050848cab5856ac2d7da3063d0685cf752633624c7fbed68b</span>
+                <span class="evidence-hash">
+                  application/json ·
+                  origen response ·
+                  redactada no ·
+                  truncada no
+                </span>
+              </li>
+            </ul>
+
+            <h3>Fuentes del caso</h3>
+            <ul class="source-list">
+              <li class="source-item">
+                <span class="source-title">AEAT · Características del QR y especificaciones del servicio de cotejo o remisión</span>
+                <span class="source-detail">
+                  versión 0.5.0 (10/12/2025) ·
+                  localizador URL base ValidarQR + parámetros nif/numserie/fecha/importe + ejemplo oficial con %26 (v0.5.0)
+                </span>
+                <span class="source-detail">https://www.agenciatributaria.es/static_files/AEAT_Desarrolladores/EEDD/IVA/VERI-FACTU/DetalleEspecificacTecnCodigoQRfactura.pdf</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </article>
+      <article class="case-file">
+        <header class="case-header">
+          <div>
+            <span class="label">qr-002</span>
+            <h3 class="case-title">Falta un parámetro obligatorio</h3>
+            <p class="case-meta">
+              categoría qr · investigación verified
+            </p>
+          </div>
+          <span class="verdict">pass</span>
+        </header>
+        <div class="case-body">
+          <div class="result-grid">
+            <section class="result-panel">
+              <span class="label">Esperado</span>
+              <pre>{
+  "notes": "Fallo sembrado: payload sin importe.",
+  "reason_codes": [
+    "QR_PARAM_MISSING"
+  ],
+  "status": "fail",
+  "validators": [
+    "qr"
+  ]
+}</pre>
+            </section>
+            <section class="result-panel">
+              <span class="label">Observado</span>
+              <pre>{
+  "code": "SIF_ACCEPTED",
+  "execution_error": null,
+  "reason_codes": [
+    "SIF_ACCEPTED",
+    "QR_PARAM_MISSING"
+  ],
+  "status": "fail"
+}</pre>
+            </section>
+            <section class="result-panel result-panel--verdict">
+              <span class="label">Veredicto derivado</span>
+              <strong class="verdict-word">pass</strong>
+              <ul class="reason-list">
+                <li>SIF_ACCEPTED</li>
+                <li>QR_PARAM_MISSING</li>
+              </ul>
+            </section>
+          </div>
+
+          <div class="case-sources">
+            <h3>Evidencias</h3>
+            <ul class="evidence-list">
+              <li class="evidence-item">
+                <strong>cases/qr-002/input.json</strong>
+                <span class="evidence-hash">sha256:81bbbccb34814a155004eac2525b74cdfadfcd70bb8a0090e3c016a14a14e4dd</span>
+                <span class="evidence-hash">
+                  application/json ·
+                  origen input ·
+                  redactada no ·
+                  truncada no
+                </span>
+              </li>
+              <li class="evidence-item">
+                <strong>cases/qr-002/response.json</strong>
+                <span class="evidence-hash">sha256:2adfedba75eebd1955035a0e64e8d42a63b2137de1a470c184b65ebf5762411b</span>
+                <span class="evidence-hash">
+                  application/json ·
+                  origen response ·
+                  redactada no ·
+                  truncada no
+                </span>
+              </li>
+            </ul>
+
+            <h3>Fuentes del caso</h3>
+            <ul class="source-list">
+              <li class="source-item">
+                <span class="source-title">AEAT · Características del QR y especificaciones del servicio de cotejo o remisión</span>
+                <span class="source-detail">
+                  versión 0.5.0 (10/12/2025) ·
+                  localizador Estructura del payload con los cuatro parámetros nif/numserie/fecha/importe (v0.5.0); errores.properties del servicio evidencia el patrón &#39;No se ha remitido el parámetro&#39; para parámetros ausentes
+                </span>
+                <span class="source-detail">https://www.agenciatributaria.es/static_files/AEAT_Desarrolladores/EEDD/IVA/VERI-FACTU/DetalleEspecificacTecnCodigoQRfactura.pdf</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </article>
+      <article class="case-file">
+        <header class="case-header">
+          <div>
+            <span class="label">qr-003</span>
+            <h3 class="case-title">Parámetro no coincide con la factura</h3>
+            <p class="case-meta">
+              categoría qr · investigación verified
+            </p>
+          </div>
+          <span class="verdict">pass</span>
+        </header>
+        <div class="case-body">
+          <div class="result-grid">
+            <section class="result-panel">
+              <span class="label">Esperado</span>
+              <pre>{
+  "notes": "Fallo sembrado: importe=999.99 distinto del registro.",
+  "reason_codes": [
+    "QR_PARAM_MISMATCH"
+  ],
+  "status": "fail",
+  "validators": [
+    "qr"
+  ]
+}</pre>
+            </section>
+            <section class="result-panel">
+              <span class="label">Observado</span>
+              <pre>{
+  "code": "SIF_ACCEPTED",
+  "execution_error": null,
+  "reason_codes": [
+    "SIF_ACCEPTED",
+    "QR_PARAM_MISMATCH"
+  ],
+  "status": "fail"
+}</pre>
+            </section>
+            <section class="result-panel result-panel--verdict">
+              <span class="label">Veredicto derivado</span>
+              <strong class="verdict-word">pass</strong>
+              <ul class="reason-list">
+                <li>SIF_ACCEPTED</li>
+                <li>QR_PARAM_MISMATCH</li>
+              </ul>
+            </section>
+          </div>
+
+          <div class="case-sources">
+            <h3>Evidencias</h3>
+            <ul class="evidence-list">
+              <li class="evidence-item">
+                <strong>cases/qr-003/input.json</strong>
+                <span class="evidence-hash">sha256:1768b33b85cb039b126eb0a619685f26139aec8bad45820d412a2ac369537799</span>
+                <span class="evidence-hash">
+                  application/json ·
+                  origen input ·
+                  redactada no ·
+                  truncada no
+                </span>
+              </li>
+              <li class="evidence-item">
+                <strong>cases/qr-003/response.json</strong>
+                <span class="evidence-hash">sha256:aa0bc81d7500bc785611fafb1ce7f2510c0e42efae38a05891ef5d30183a28db</span>
+                <span class="evidence-hash">
+                  application/json ·
+                  origen response ·
+                  redactada no ·
+                  truncada no
+                </span>
+              </li>
+            </ul>
+
+            <h3>Fuentes del caso</h3>
+            <ul class="source-list">
+              <li class="source-item">
+                <span class="source-title">AEAT · Características del QR y especificaciones del servicio de cotejo o remisión</span>
+                <span class="source-detail">
+                  versión 0.5.0 (10/12/2025) ·
+                  localizador Servicio de cotejo: los parámetros describen la factura emitida (v0.5.0)
+                </span>
+                <span class="source-detail">https://www.agenciatributaria.es/static_files/AEAT_Desarrolladores/EEDD/IVA/VERI-FACTU/DetalleEspecificacTecnCodigoQRfactura.pdf</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </article>
+      <article class="case-file">
+        <header class="case-header">
+          <div>
+            <span class="label">qr-004</span>
+            <h3 class="case-title">Host no oficial en la URL del QR</h3>
+            <p class="case-meta">
+              categoría qr · investigación verified
+            </p>
+          </div>
+          <span class="verdict">pass</span>
+        </header>
+        <div class="case-body">
+          <div class="result-grid">
+            <section class="result-panel">
+              <span class="label">Esperado</span>
+              <pre>{
+  "notes": "Fallo sembrado: host sede-falsa.example.org. Nunca se abre la URL.",
+  "reason_codes": [
+    "QR_URL_NOT_ALLOWED"
+  ],
+  "status": "fail",
+  "validators": [
+    "qr"
+  ]
+}</pre>
+            </section>
+            <section class="result-panel">
+              <span class="label">Observado</span>
+              <pre>{
+  "code": "SIF_ACCEPTED",
+  "execution_error": null,
+  "reason_codes": [
+    "SIF_ACCEPTED",
+    "QR_URL_NOT_ALLOWED"
+  ],
+  "status": "fail"
+}</pre>
+            </section>
+            <section class="result-panel result-panel--verdict">
+              <span class="label">Veredicto derivado</span>
+              <strong class="verdict-word">pass</strong>
+              <ul class="reason-list">
+                <li>SIF_ACCEPTED</li>
+                <li>QR_URL_NOT_ALLOWED</li>
+              </ul>
+            </section>
+          </div>
+
+          <div class="case-sources">
+            <h3>Evidencias</h3>
+            <ul class="evidence-list">
+              <li class="evidence-item">
+                <strong>cases/qr-004/input.json</strong>
+                <span class="evidence-hash">sha256:a90511165db108b9a5e86166137e69763f69919fcb58b0b8ed6a592e9e020807</span>
+                <span class="evidence-hash">
+                  application/json ·
+                  origen input ·
+                  redactada no ·
+                  truncada no
+                </span>
+              </li>
+              <li class="evidence-item">
+                <strong>cases/qr-004/response.json</strong>
+                <span class="evidence-hash">sha256:dd100b14aff647ad8d9cd06fb735f89d38e259ec1ec8e43a86f0bd056ad6fa47</span>
+                <span class="evidence-hash">
+                  application/json ·
+                  origen response ·
+                  redactada no ·
+                  truncada no
+                </span>
+              </li>
+            </ul>
+
+            <h3>Fuentes del caso</h3>
+            <ul class="source-list">
+              <li class="source-item">
+                <span class="source-title">AEAT · Características del QR y especificaciones del servicio de cotejo o remisión</span>
+                <span class="source-detail">
+                  versión 0.5.0 (10/12/2025) ·
+                  localizador URL base oficial de cotejo (www2.agenciatributaria.gob.es/wlpl/TIKE-CONT/ValidarQR)
+                </span>
+                <span class="source-detail">https://www.agenciatributaria.es/static_files/AEAT_Desarrolladores/EEDD/IVA/VERI-FACTU/DetalleEspecificacTecnCodigoQRfactura.pdf</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </article>
+      <article class="case-file">
+        <header class="case-header">
+          <div>
+            <span class="label">net-001</span>
+            <h3 class="case-title">Lote con aceptación parcial</h3>
+            <p class="case-meta">
+              categoría transport · investigación research_required
+            </p>
+          </div>
+          <span class="verdict">skipped</span>
+        </header>
+        <div class="case-body">
+          <div class="result-grid">
+            <section class="result-panel">
+              <span class="label">Esperado</span>
+              <pre>{
+  "notes": "Hip\u00f3tesis: resultados por registro. Requiere normalizaci\u00f3n por elemento (OS-13).",
+  "reason_codes": [],
+  "status": "warning",
+  "validators": []
+}</pre>
+            </section>
+            <section class="result-panel">
+              <span class="label">Observado</span>
+              <pre>{
+  "code": null,
+  "execution_error": null,
+  "reason_codes": [
+    "RESEARCH_REQUIRED_NOT_RUN"
+  ],
+  "status": null
+}</pre>
+            </section>
+            <section class="result-panel result-panel--verdict">
+              <span class="label">Veredicto derivado</span>
+              <strong class="verdict-word">skipped</strong>
+              <ul class="reason-list">
+                <li>RESEARCH_REQUIRED_NOT_RUN</li>
+              </ul>
+            </section>
+          </div>
+
+          <div class="case-sources">
+            <h3>Evidencias</h3>
+            <ul class="evidence-list">
+              <li class="empty">El caso no referencia artefactos de evidencia.</li>
+            </ul>
+
+            <h3>Fuentes del caso</h3>
+            <ul class="source-list">
+              <li class="source-item">
+                <span class="source-title">AEAT · WSDL de servicios web (punto de entrada)</span>
+                <span class="source-detail">
+                  versión no declarada ·
+                  localizador no declarado
+                </span>
+                <span class="source-detail">https://sede.agenciatributaria.gob.es/Sede/iva/sistemas-informaticos-facturacion-verifactu/informacion-tecnica/wsdl-servicios-web.html</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="section technical-errors" aria-labelledby="errors-title">
+      <div class="section-heading">
+        <h2 id="errors-title">Anexo de errores técnicos</h2>
+        <span class="section-index">05 / incidencias</span>
+      </div>
+      <p class="empty">No se registraron errores técnicos.</p>
+    </section>
+
+    <section class="section" aria-labelledby="limitations-title">
+      <div class="section-heading">
+        <h2 id="limitations-title">Limitaciones y advertencia</h2>
+        <span class="section-index">06 / lectura</span>
+      </div>
+      <ol class="limitation-list">
+        <li>La cobertura es la del corpus y reglas versionadas incluidas en el ruleset del run; no es cobertura de toda la normativa.</li>
+        <li>El runner ejecuta una única invocación por caso (OS-13): escenarios multi-invocación permanecen fuera de alcance.</li>
+        <li>Los casos research_required se ejecutan como hipótesis y nunca producen hallazgos normativos.</li>
+        <li>Los resultados describen la implementación objetivo observada en el momento del run; no garantizan aceptación futura por AEAT ni ausencia de defectos.</li>
+      </ol>
+      <p class="disclaimer">Este informe es una evaluación técnica reproducible sobre un corpus versionado. No constituye certificación, homologación, dictamen jurídico ni garantía de cumplimiento normativo. La cobertura declarada es la del corpus y reglas versionadas incluidas, nunca cobertura jurídica total. El manifiesto SHA-256 detecta alteraciones respecto al sellado de la evidencia; no es cadena de custodia ni prueba criptográfica de procedencia.</p>
+    </section>
+
+    <footer class="footer">
+      <span>VERIFACTU-QA-LAB · documento derivado, sin re-ejecución</span>
+      <span>20260723T141035640832Z-29df9929a1bd46fd86224394fc9228c5</span>
+    </footer>
+  </main>
+</body>
+</html>
